@@ -10,7 +10,7 @@ namespace СlinicReception.ViewModels
 {
     public class LoginViewModel: ViewModelBase
     {
-        string show;
+        string show;        
         public string Show
         {
             get => show;

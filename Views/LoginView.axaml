@@ -16,10 +16,10 @@
 		<Button Height="30" VerticalContentAlignment="Bottom" HorizontalAlignment="Center">Войти</Button>-->
 		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 			<TextBlock Background="DarkGoldenrod" FontSize="20" HorizontalAlignment="Center" >Авторизация</TextBlock>
-			<TextBox Watermark="Введите логин "/>
-			<TextBox PasswordChar="{Binding Show}" Watermark="Введите пароль"/>
+			<TextBox Text="{Binding $parent[Window].DataContext.Login}" Watermark="Введите логин "/>
+			<TextBox Text="{Binding $parent[Window].DataContext.Password}" PasswordChar="{Binding Show}" Watermark="Введите пароль"/>
 			<CheckBox Command="{Binding PassShow}">Показывать пароль</CheckBox>
-			<Button Command="{Binding $parent[Window].DataContext.Patient}">Войти</Button>
+			<Button Command="{Binding $parent[Window].DataContext.UserLogin}">Войти</Button>
 			<!--<Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto" VerticalAlignment="Top">
 				<TextBlock Text="Col0Row0:" Grid.Row="0" Grid.Column="0"/>
 				<TextBlock Text="Col0Row1:" Grid.Row="1" Grid.Column="0"/>

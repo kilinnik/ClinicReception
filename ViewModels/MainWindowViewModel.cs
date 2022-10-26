@@ -13,6 +13,18 @@ namespace СlinicReception.ViewModels
         ViewModelBase content;
         int height;
         int width;
+        string password;
+        string login;
+        public string Login
+        {
+            get => login;
+            private set => this.RaiseAndSetIfChanged(ref login, value);
+        }
+        public string Password
+        {
+            get => password;
+            private set => this.RaiseAndSetIfChanged(ref password, value);
+        }
         public int Width
         {
             get => width;
@@ -22,6 +34,10 @@ namespace СlinicReception.ViewModels
         {
             get => height;
             private set => this.RaiseAndSetIfChanged(ref height, value);
+        }
+        public void UserLogin()
+        {
+            if (Login == "qwerty" && Password == "123") Patient();
         }
         public void Registration()
         {
