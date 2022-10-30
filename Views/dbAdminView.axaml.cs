@@ -2,9 +2,9 @@
 
 namespace СlinicReception.Views
 {
-    public partial class dbAdminView : UserControl
+    public partial class DbAdminView : UserControl
     {
-        public dbAdminView()
+        public DbAdminView()
         {
             InitializeComponent();
         }

@@ -1,31 +1,35 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:СlinicReception.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
+	    xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+		xmlns:material="using:Material.Icons.Avalonia"
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.RegistrationView">
-	<Panel>
-		<!--<Canvas>
-			<TextBox Width="125" Canvas.Left="168" Canvas.Top="40" Watermark="Введите логин "/>
-			<TextBox Width="125" Canvas.Left="170" Canvas.Top="80" Watermark="Введите пароль"/>
-		</Canvas>		
-		<Button Height="30" VerticalContentAlignment="Bottom" HorizontalAlignment="Center">Войти</Button>-->
-		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-			<TextBlock Background="DarkCyan" FontSize="20" HorizontalAlignment="Center" >Регистрация</TextBlock>
-			<TextBox Watermark="Фамилия"/>
-			<TextBox Watermark="Имя"/>
-			<TextBox Watermark="Отчество"/>
-			<TextBox Watermark="Телефон"/>
-			<TextBox Watermark="Дата рождения"/>
-			<TextBox Watermark="Адрес"/>
-			<TextBox Watermark="Логин"/>
-			<TextBox Watermark="Пароль"/>
-			<Button  Command="{Binding $parent[Window].DataContext.Patient}">Зарегестрироваться</Button>
-			<!--<Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto" VerticalAlignment="Top">
-				<TextBlock Text="Col0Row0:" Grid.Row="0" Grid.Column="0"/>
-				<TextBlock Text="Col0Row1:" Grid.Row="1" Grid.Column="0"/>
-				<TextBlock Text="Col0Row2:" Grid.Row="2" Grid.Column="0"/>				
-			</Grid>-->
-		</StackPanel>
-	</Panel>
+	<!--<dialogHost:DialogHost isOpen ="{Binding Show}">
+		<dialogHost:DialogHost.DialogContent>
+			<TextBlock Text="{Binding Text}"></TextBlock>
+		</dialogHost:DialogHost.DialogContent>-->
+		<Panel>
+			<Button Command="{Binding Back}" Background="DarkSalmon" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="30">Назад</Button>
+			<Button Command="{Binding Theme}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
+				<material:MaterialIcon Kind="ThemeLightDark"></material:MaterialIcon>
+			</Button>
+			<StackPanel MaxWidth="300" Width="300" Spacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+				<TextBlock Background="HotPink" FontSize="20" HorizontalAlignment="Center" >Регистрация</TextBlock>
+				<TextBox UseFloatingWatermark="{Binding Show}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding TextSurname}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding TextName}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding TextPatronymic}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding TextPhone}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding DateOfBirthday}" Watermark="Дата рождения" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Adress}" Watermark="Адрес" p1:TextFieldAssist.Label="{Binding TextAdress}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Login}" Watermark="Логин" p1:TextFieldAssist.Label="{Binding TextLogin}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Password}" Classes="outline dense revealPasswordButton" PasswordChar="*" Watermark="Пароль" p1:TextFieldAssist.Label="{Binding TextPassword}"/>
+				<Button Command="{Binding Registration}">Зарегестрироваться</Button>
+			</StackPanel>
+		</Panel>
+	<!--</dialogHost:DialogHost>-->
 </UserControl>

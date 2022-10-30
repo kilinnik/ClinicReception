@@ -4,5 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="СlinicReception.Views.DataAdminView">
-  Welcome to Avalonia!
+	<Panel>
+		<StackPanel>
+			<TabControl>
+				<TabItem Header="Администратор БД" VerticalContentAlignment="Center">
+					<StackPanel DockPanel.Dock="Top">
+						<TextBox  Watermark="Возможность редактирования данных пользователей" />
+						<TextBox  Watermark="Номер карты" />
+						<TextBox  Watermark="Фамилия" />
+						<TextBox  Watermark="Имя" />
+						<TextBox  Watermark="Отчество" />
+						<TextBox  Watermark="Номер телефона" />
+						<TextBox  Watermark="Номер участка" />
+						<TextBox  Watermark="Адрес проживания" />
+					</StackPanel>
+				</TabItem>
+				<TabItem>
+					<TabItem.Header>
+						<TextBlock VerticalAlignment="Center">Получение сведений о занятости кабинетов</TextBlock>
+					</TabItem.Header>
+					<StackPanel DockPanel.Dock="Top">
+						<TextBox  Watermark="Вывод информации о кабинетах и специалистах" />
+						<TextBox  Watermark="Пунт 2.2 из твоих пользователей" />
+					</StackPanel>
+				</TabItem>
+			</TabControl>
+		</StackPanel>
+	</Panel>
 </UserControl>

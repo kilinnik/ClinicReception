@@ -1,30 +1,23 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:СlinicReception.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:material="using:Material.Icons.Avalonia"
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.LoginView">
 	<Panel>
-		<Button Command="{Binding $parent[Window].DataContext.Registration}" Background="DarkSlateGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="30" >Зарегистрироваться</Button>
-		<Button Command="{Binding $parent[Window].DataContext.Themes}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
-			<PathIcon Data="{StaticResource dark_theme_regular}" />
+		<Button Command="{Binding Registration}" Background="DarkSlateGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="30">Зарегистрироваться</Button>
+		<Button Command="{Binding Theme}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
+			<material:MaterialIcon Kind="ThemeLightDark"></material:MaterialIcon>
 		</Button>
-		<!--<Canvas>
-			<TextBox Width="125" Canvas.Left="168" Canvas.Top="40" Watermark="Введите логин "/>
-			<TextBox Width="125" Canvas.Left="170" Canvas.Top="80" Watermark="Введите пароль"/>
-		</Canvas>		
-		<Button Height="30" VerticalContentAlignment="Bottom" HorizontalAlignment="Center">Войти</Button>-->
-		<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-			<TextBlock Background="DarkGoldenrod" FontSize="20" HorizontalAlignment="Center" >Авторизация</TextBlock>
-			<TextBox Text="{Binding $parent[Window].DataContext.Login}" Watermark="Введите логин "/>
-			<TextBox Text="{Binding $parent[Window].DataContext.Password}" PasswordChar="{Binding Show}" Watermark="Введите пароль"/>
-			<CheckBox Command="{Binding PassShow}">Показывать пароль</CheckBox>
-			<Button Command="{Binding $parent[Window].DataContext.UserLogin}">Войти</Button>
-			<!--<Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto,Auto,Auto" VerticalAlignment="Top">
-				<TextBlock Text="Col0Row0:" Grid.Row="0" Grid.Column="0"/>
-				<TextBlock Text="Col0Row1:" Grid.Row="1" Grid.Column="0"/>
-				<TextBlock Text="Col0Row2:" Grid.Row="2" Grid.Column="0"/>				
-			</Grid>-->
+		<StackPanel Width="300" MaxWidth="300" Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<TextBlock HorizontalAlignment="Center" IsVisible="{Binding Show}" Foreground="Red" Text="Неправильный логин или пароль"/>
+			<TextBlock Background="Violet" FontSize="20" HorizontalAlignment="Center" >Авторизация</TextBlock>
+			<TextBox Text="{Binding Login}" UseFloatingWatermark="True" Classes="outline dense" p1:TextFieldAssist.Label="Логин"/>
+			<TextBox Text="{Binding Password}" UseFloatingWatermark="True" Classes="outline dense revealPasswordButton" p1:TextFieldAssist.Label="Пароль" PasswordChar="*"/>
+			<Button Command="{Binding CheckLogin}">Войти</Button>
 		</StackPanel>
 	</Panel>
 </UserControl>

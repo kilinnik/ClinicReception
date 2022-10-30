@@ -13,18 +13,6 @@ namespace СlinicReception.ViewModels
         ViewModelBase content;
         int height;
         int width;
-        string password;
-        string login;
-        public string Login
-        {
-            get => login;
-            private set => this.RaiseAndSetIfChanged(ref login, value);
-        }
-        public string Password
-        {
-            get => password;
-            private set => this.RaiseAndSetIfChanged(ref password, value);
-        }
         public int Width
         {
             get => width;
@@ -35,15 +23,45 @@ namespace СlinicReception.ViewModels
             get => height;
             private set => this.RaiseAndSetIfChanged(ref height, value);
         }
-        public void UserLogin()
+
+        public ViewModelBase Content
         {
-            if (Login == "qwerty" && Password == "123") Patient();
+            get => content;
+            private set => this.RaiseAndSetIfChanged(ref content, value);
+        }
+        public void DbAdmin()
+        {
+            Content = new DbAdminViewModel();
+        }
+        public void DataAdmin()
+        {
+            Content = new DataAdminViewModel();
+        }
+        public void HeadDoctor()
+        {
+            Content = new HeadDoctorViewModel();
+        }
+        public void Registrar()
+        {
+            Content = new RegistrarViewModel();
+        }
+        public void Doctor()
+        {
+            Content = new DoctorViewModel();
+        }
+        public void Patient()
+        {
+            Content = new PatientViewModel();
         }
         public void Registration()
         {
-            Content = new RegistrationViewModel();           
+            Content = new RegistrationViewModel(this);
         }
-        public void Themes()
+        public void Login()
+        {
+            Content = new LoginViewModel(this);
+        }
+        public void ChangeTheme()
         {
             var themeBootstrap = Application.Current.LocateMaterialTheme<MaterialThemeBase>();
             if (BaseThemeMode.Dark == themeBootstrap.CurrentTheme.GetBaseTheme())
@@ -67,17 +85,8 @@ namespace СlinicReception.ViewModels
         }
         public MainWindowViewModel()
         {
-            Content = new LoginViewModel();
-            width = 1100; height = 700;
-        }
-        public ViewModelBase Content
-        {
-            get => content;
-            private set => this.RaiseAndSetIfChanged(ref content, value);
-        }
-        public void Patient()
-        {
-            Content = new PatientViewModel();
+            Content = new LoginViewModel(this);
+            Width = 1100; Height = 700;
         }
     }
 }

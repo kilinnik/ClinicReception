@@ -4,5 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="СlinicReception.Views.HeadDoctorView">
-  Welcome to Avalonia!
+	<Panel>
+		<StackPanel>
+			<TabControl>
+				<TabItem Header="Информация о главном враче" VerticalContentAlignment="Center">
+					<StackPanel DockPanel.Dock="Top">
+						<TextBox  Watermark="Стаж работы" />
+						<TextBox  Watermark="Достижения и заслуженные награды" />
+						<TextBox  Watermark="Cнизу добавим фотку врача и описание к нему, я займусь этим чуть позже" />
+						<TextBox  Watermark="Кнопка Перейти должна помогать в переходах между страницами, но надо реализовать, как с пациентом" />
+						<Button  Command="{Binding $parent[Window].DataContext.Patient}">Перейти</Button>
+					</StackPanel>
+				</TabItem>
+				<TabItem>
+					<TabItem.Header>
+						<TextBlock VerticalAlignment="Center">Получение сведений о занятости кабинетов</TextBlock>
+					</TabItem.Header>
+					<StackPanel DockPanel.Dock="Top">
+						<TextBox  Watermark="Вывод информации о кабинетах и специалистах" />
+					</StackPanel>
+				</TabItem>
+			</TabControl>
+		</StackPanel>
+	</Panel>
 </UserControl>

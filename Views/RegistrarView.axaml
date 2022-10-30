@@ -4,5 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="СlinicReception.Views.RegistrarView">
-  Welcome to Avalonia!
+	<Panel>
+		<TabControl>
+			<TabItem Header="Карта пациента" VerticalContentAlignment="Center">
+				<StackPanel DockPanel.Dock="Top">
+					<TextBox  Watermark="Номер карты" />
+					<TextBox  Watermark="Фамилия" />
+					<TextBox  Watermark="Имя" />
+					<TextBox  Watermark="Отчество" />
+					<TextBox  Watermark="Номер телефона" />
+					<TextBox  Watermark="Номер участка" />
+					<TextBox  Watermark="Адрес проживания" />
+				</StackPanel>
+			</TabItem>
+			<TabItem>
+				<TabItem.Header>
+					<TextBlock VerticalAlignment="Center">Справки</TextBlock>
+				</TabItem.Header>
+				<StackPanel DockPanel.Dock="Top">
+					<TextBox Text="{Binding SearchText}" Watermark="Введите имя пациента или № личной карты" />
+				</StackPanel>
+			</TabItem>
+		</TabControl>
+	</Panel>
 </UserControl>

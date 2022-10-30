@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace СlinicReception.ViewModels
 {
-    internal class HeadDoctorViewModel : ViewModelBase
+    public class HeadDoctorViewModel : ViewModelBase
     {
     }
 }

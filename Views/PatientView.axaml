@@ -5,32 +5,44 @@
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.PatientView">
 	<Panel>
-		<StackPanel>
-			<TabControl>
-				<TabItem Header="Запись на приём" VerticalContentAlignment="Center">
-					
-				</TabItem>
-				<TabItem Header="Карта пациента" VerticalContentAlignment="Center">
-					
-				</TabItem>
-				<TabItem>
-					<TabItem.Header>
-						<TextBlock VerticalAlignment="Center">Расписание врачей</TextBlock>
-					</TabItem.Header>
-					<StackPanel DockPanel.Dock="Top">
-						<TextBox Text="{Binding SearchText}" Watermark="Введите имя врача или № кабинета" />
-						<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
-					</StackPanel>
-				</TabItem>
-				<TabItem>
-					<TabItem.Header>
-						<TextBlock VerticalAlignment="Center">Справки</TextBlock>
-					</TabItem.Header>
-					<StackPanel Orientation="Horizontal">
-						
-					</StackPanel>
-				</TabItem>
-			</TabControl>
-		</StackPanel>
+	<StackPanel>
+		<TabControl>
+			<TabItem Header="Запись на приём">
+				<StackPanel>
+					<TextBox  Watermark="Выбор специальности" />
+					<ComboBox SelectedIndex="0">
+						<ComboBoxItem>Терапевт</ComboBoxItem>
+						<ComboBoxItem>Хирург</ComboBoxItem>
+						<ComboBoxItem>Уролог</ComboBoxItem>
+						<ComboBoxItem>Гинеколог</ComboBoxItem>
+						<ComboBoxItem>Дерматолог</ComboBoxItem>
+						<StackPanel>
+							<Calendar Name="DisplayDatesCalendar" SelectionMode="SingleDate"/>
+						</StackPanel>
+					</ComboBox>
+				</StackPanel>
+			</TabItem>
+			<TabItem Header="Карта пациента">
+				<StackPanel DockPanel.Dock="Top">
+					<TextBox  Watermark="Номер карты" />
+					<TextBox  Watermark="Фамилия" />
+					<TextBox  Watermark="Имя" />
+					<TextBox  Watermark="Отчество" />
+					<TextBox  Watermark="Номер телефона" />
+					<TextBox  Watermark="Номер участка" />
+					<TextBox  Watermark="Адрес проживания" />
+				</StackPanel>
+			</TabItem>
+			<TabItem>
+				<TabItem.Header>
+					<TextBlock VerticalAlignment="Center">Расписание врачей</TextBlock>
+				</TabItem.Header>
+				<StackPanel DockPanel.Dock="Top">
+					<TextBox Text="{Binding SearchText}" Watermark="Введите имя врача или № кабинета" />
+					<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+				</StackPanel>
+			</TabItem>
+		</TabControl>
+	</StackPanel>
 	</Panel>
 </UserControl>
