@@ -9,6 +9,11 @@
 		xmlns:material="using:Material.Icons.Avalonia"
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.RegistrationView">
+	<!--<UserControl.Styles>
+		<Style Selector="DatePicker.mdp">
+			<Setter Property="SelectedDate" Value="Введите дату рождения"/>
+		</Style>
+	</UserControl.Styles>-->
 	<!--<dialogHost:DialogHost isOpen ="{Binding Show}">
 		<dialogHost:DialogHost.DialogContent>
 			<TextBlock Text="{Binding Text}"></TextBlock>
@@ -24,10 +29,19 @@
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding TextName}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding TextPatronymic}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding TextPhone}"/>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding DateOfBirthday}" Watermark="Дата рождения" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}"/>
+				<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}" />
+				<!--<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding DateOfBirthday}" Watermark="Дата рождения" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}"/>-->
+				<!--<AutoCompleteBox>
+					<TextBlock Text="Item 1" />
+					<TextBlock Text="Item 2" />
+					<TextBlock Text="Item 3" />
+					<TextBlock Text="Item 4" />
+				</AutoCompleteBox>-->
+				<ComboBox Items="{Binding Streets}" Classes="Outline" p1:ComboBoxAssist.Label="Адрес">
+				</ComboBox>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Adress}" Watermark="Адрес" p1:TextFieldAssist.Label="{Binding TextAdress}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Login}" Watermark="Логин" p1:TextFieldAssist.Label="{Binding TextLogin}"/>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Password}" Classes="outline dense revealPasswordButton" PasswordChar="*" Watermark="Пароль" p1:TextFieldAssist.Label="{Binding TextPassword}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Password}" Classes="outline dense revealPasswordButton" PasswordChar="*" Watermark="Пароль" p1:TextFieldAssist.Label="{Binding TextPassword}"/>			
 				<Button Command="{Binding Registration}">Зарегестрироваться</Button>
 			</StackPanel>
 		</Panel>

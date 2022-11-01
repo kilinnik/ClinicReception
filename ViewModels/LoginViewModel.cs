@@ -58,8 +58,10 @@ namespace СlinicReception.ViewModels
         {
             MW.ChangeTheme();
         }
+        СlinicReceptionContext DB = new СlinicReceptionContext();
         public LoginViewModel(MainWindowViewModel mw)
         {
+            using var db = new СlinicReceptionContext();
             MW = mw; show = false;
         }
     }

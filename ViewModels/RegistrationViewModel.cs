@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,14 @@ namespace СlinicReception.ViewModels
 {
     public class RegistrationViewModel: ViewModelBase
     {
+        static List<List<string>> ListOfArea = new List<List<string>>() { new List<string> {"ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> {"ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> {"ул. Филатова", "Школьная ул." } };
         bool show;
         MainWindowViewModel mw;
         string? surname;
         string? name;
         string? patronymic;
         long? phone;
-        DateTime? dateOfBirthday;
+        string? dateOfBirthday;
         string? adress;
         string? login;
         string? password;
@@ -88,7 +90,7 @@ namespace СlinicReception.ViewModels
             get => phone;
             private set => this.RaiseAndSetIfChanged(ref phone, value);
         }
-        public DateTime? DateOfBirthday
+        public string? DateOfBirthday
         {
             get => dateOfBirthday;
             private set => this.RaiseAndSetIfChanged(ref dateOfBirthday, value);
@@ -126,6 +128,16 @@ namespace СlinicReception.ViewModels
         {
             MW.ChangeTheme();
         }
+        public void Streets()
+        {
+            for (int i = 0; i < ListOfArea.Count; i++)
+            {
+                for (int j = 0; j < ListOfArea[i].Count; j++)
+                {
+                    var textBlock = new TextBlock { Text = ListOfArea[i][j] };
+                }
+            }
+        }
         public void Registration()
         {
             using var db = new СlinicReceptionContext();
@@ -137,14 +149,14 @@ namespace СlinicReception.ViewModels
             if (Patronymic == null) TextPatronymic = "Введите отчество";
             else if (!Patronymic.All(Char.IsLetter)) TextPatronymic = "Отчество содержит недопустимые символы";
             if (Phone == null) TextPhone = "Введите телефон";
-            if (DateOfBirthday == null) TextDateOfBirthday = "Введите дату рождения";
+            if (DateOfBirthday == null) TextDateOfBirthday = "Выберете дату рождения";
             if (Adress == null) TextAdress = "Введите адрес";
             if (Login == null) TextLogin = "Введите логин";
             else if (db.Log_In.Any(x => x.Login == Login)) TextLogin = "Такой логин уже существует";
             if (Password == null) TextPassword = "Введите пароль";
             if (TextSurname == null && TextName == null && TextPatronymic == null && TextPhone == null && TextDateOfBirthday == null && TextAdress == null && TextLogin == null && TextPassword == null)
             {
-                db.Add(new Patient(db.Пациент.Last().Номер_карты + 1, Surname, Name, Patronymic, (long)Phone, (DateTime)DateOfBirthday, 3, Adress));
+                //db.Add(new Patient(db.Пациент.Last().Номер_карты + 1, Surname, Name, Patronymic, (long)Phone, DateOfBirthday, 3, Adress));
                 db.Add(new DataLogin(Login, Password, "Пациент", db.Пациент.Last().Номер_карты + 1));
                 db.SaveChanges();
                 MW.Patient();
@@ -153,6 +165,8 @@ namespace СlinicReception.ViewModels
         }
         public RegistrationViewModel(MainWindowViewModel mw)
         {
+            //DateOfBirthday = "Введите дату рождения";
+            TextDateOfBirthday = "Дата рождения";
             MW = mw; Show = false;
         }
     }

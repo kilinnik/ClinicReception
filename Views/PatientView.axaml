@@ -16,10 +16,8 @@
 						<ComboBoxItem>Уролог</ComboBoxItem>
 						<ComboBoxItem>Гинеколог</ComboBoxItem>
 						<ComboBoxItem>Дерматолог</ComboBoxItem>
-						<StackPanel>
-							<Calendar Name="DisplayDatesCalendar" SelectionMode="SingleDate"/>
-						</StackPanel>
 					</ComboBox>
+					<Calendar Name="DisplayDatesCalendar" SelectionMode="SingleDate"/>
 				</StackPanel>
 			</TabItem>
 			<TabItem Header="Карта пациента">
