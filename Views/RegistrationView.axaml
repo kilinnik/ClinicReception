@@ -23,23 +23,20 @@
 			<Button Command="{Binding Theme}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
 				<material:MaterialIcon Kind="ThemeLightDark"></material:MaterialIcon>
 			</Button>
-			<StackPanel MaxWidth="300" Width="300" Spacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<StackPanel MaxWidth="450" Width="450" Spacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
 				<TextBlock Background="HotPink" FontSize="20" HorizontalAlignment="Center" >Регистрация</TextBlock>
 				<TextBox UseFloatingWatermark="{Binding Show}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding TextSurname}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding TextName}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding TextPatronymic}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding TextPhone}"/>
-				<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}" />
-				<!--<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding DateOfBirthday}" Watermark="Дата рождения" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}"/>-->
-				<!--<AutoCompleteBox>
-					<TextBlock Text="Item 1" />
-					<TextBlock Text="Item 2" />
-					<TextBlock Text="Item 3" />
-					<TextBlock Text="Item 4" />
-				</AutoCompleteBox>-->
-				<ComboBox Items="{Binding Streets}" Classes="Outline" p1:ComboBoxAssist.Label="Адрес">
-				</ComboBox>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Adress}" Watermark="Адрес" p1:TextFieldAssist.Label="{Binding TextAdress}"/>
+				<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}" />			
+				<WrapPanel>
+					<TextBlock VerticalAlignment="Center" FontSize="18" Width="60">Адрес:</TextBlock>
+					<ComboBox  Classes="Outline" SelectedItem="{Binding Street}" SelectedIndex="{Binding Index}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding TextAdress}">
+					</ComboBox>
+					<TextBox Width="75" Text="{Binding House}" Watermark="Дом" />
+					<TextBox Width="75" Text="{Binding Flat}" Watermark="Квартира"/>
+				</WrapPanel>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Login}" Watermark="Логин" p1:TextFieldAssist.Label="{Binding TextLogin}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Password}" Classes="outline dense revealPasswordButton" PasswordChar="*" Watermark="Пароль" p1:TextFieldAssist.Label="{Binding TextPassword}"/>			
 				<Button Command="{Binding Registration}">Зарегестрироваться</Button>

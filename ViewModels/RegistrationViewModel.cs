@@ -1,8 +1,12 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using DynamicData.Binding;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using СlinicReception.Services;
@@ -19,7 +23,7 @@ namespace СlinicReception.ViewModels
         string? patronymic;
         long? phone;
         string? dateOfBirthday;
-        string? adress;
+        //string? adress;
         string? login;
         string? password;
         string? textSurname;
@@ -30,6 +34,36 @@ namespace СlinicReception.ViewModels
         string? textAdress;
         string? textLogin;
         string? textPassword;
+        ObservableCollection<TextBlock>  streets = new ObservableCollection<TextBlock>();
+        string? street;
+        int? house;
+        int? flat;
+        int index;
+        public int Index
+        {
+            get => index;
+            set => this.RaiseAndSetIfChanged(ref index, value);
+        }
+        public string? Street
+        {
+            get => street;
+            set => this.RaiseAndSetIfChanged(ref street, value);
+        }
+        public int? House
+        {
+            get => house;
+            set => this.RaiseAndSetIfChanged(ref house, value);
+        }
+        public int? Flat
+        {
+            get => flat;
+            set => this.RaiseAndSetIfChanged(ref flat, value);
+        }
+        public ObservableCollection<TextBlock> Streets
+        { 
+            get =>  streets;
+            set => this.RaiseAndSetIfChanged(ref streets, value);
+        }
         public string? TextSurname
         {
             get => textSurname;
@@ -95,11 +129,11 @@ namespace СlinicReception.ViewModels
             get => dateOfBirthday;
             private set => this.RaiseAndSetIfChanged(ref dateOfBirthday, value);
         }
-        public string? Adress
-        {
-            get => adress;
-            private set => this.RaiseAndSetIfChanged(ref adress, value);
-        }
+        //public string? Adress
+        //{
+        //    get => adress;
+        //    private set => this.RaiseAndSetIfChanged(ref adress, value);
+        //}
         public string? Login
         {
             get => login;
@@ -128,16 +162,6 @@ namespace СlinicReception.ViewModels
         {
             MW.ChangeTheme();
         }
-        public void Streets()
-        {
-            for (int i = 0; i < ListOfArea.Count; i++)
-            {
-                for (int j = 0; j < ListOfArea[i].Count; j++)
-                {
-                    var textBlock = new TextBlock { Text = ListOfArea[i][j] };
-                }
-            }
-        }
         public void Registration()
         {
             using var db = new СlinicReceptionContext();
@@ -148,16 +172,23 @@ namespace СlinicReception.ViewModels
             else if (!Name.All(Char.IsLetter)) TextName = "Имя содержит недопустимые символы";
             if (Patronymic == null) TextPatronymic = "Введите отчество";
             else if (!Patronymic.All(Char.IsLetter)) TextPatronymic = "Отчество содержит недопустимые символы";
-            if (Phone == null) TextPhone = "Введите телефон";
+            if (Phone == null) TextPhone = "Введите номер телефона";
+            else if (Phone.ToString()?.Length != 10) TextPhone = "Неверный формат номера телефона";
             if (DateOfBirthday == null) TextDateOfBirthday = "Выберете дату рождения";
-            if (Adress == null) TextAdress = "Введите адрес";
+            else if (Convert.ToDateTime(DateOfBirthday) > DateTime.Today) TextDateOfBirthday = "Неверная дата рождения";
+            if (Street == null || House == null) TextAdress = "Введите адрес";
             if (Login == null) TextLogin = "Введите логин";
             else if (db.Log_In.Any(x => x.Login == Login)) TextLogin = "Такой логин уже существует";
             if (Password == null) TextPassword = "Введите пароль";
             if (TextSurname == null && TextName == null && TextPatronymic == null && TextPhone == null && TextDateOfBirthday == null && TextAdress == null && TextLogin == null && TextPassword == null)
             {
-                //db.Add(new Patient(db.Пациент.Last().Номер_карты + 1, Surname, Name, Patronymic, (long)Phone, DateOfBirthday, 3, Adress));
-                db.Add(new DataLogin(Login, Password, "Пациент", db.Пациент.Last().Номер_карты + 1));
+                //List<string> months = new List<string>() { "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря" };
+                int area = Index < ListOfArea[0].Count ? 1 : Index < (ListOfArea[0].Count + ListOfArea[1].Count) ? 2 : 3;
+                string adress;
+                if (Flat == null) adress = $"{Street}, д. {House}";
+                else adress = $"{Street}, д. {House}, кв. {Flat}";
+                db.Add(new Patient(db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты + 1, Surname, Name, Patronymic, (long)Phone, Convert.ToDateTime(DateOfBirthday), area, adress));
+                db.Add(new DataLogin(Login, Password, "Пациент", db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты + 1));
                 db.SaveChanges();
                 MW.Patient();
             }
@@ -167,7 +198,14 @@ namespace СlinicReception.ViewModels
         {
             //DateOfBirthday = "Введите дату рождения";
             TextDateOfBirthday = "Дата рождения";
-            MW = mw; Show = false;
+            MW = mw; Show = false; TextAdress = "Улица";
+            for (int i = 0; i < ListOfArea.Count; i++)
+            {
+                for (int j = 0; j < ListOfArea[i].Count; j++)
+                {
+                    Streets.Add(new TextBlock { Text = ListOfArea[i][j] });
+                }
+            }
         }
     }
 }
