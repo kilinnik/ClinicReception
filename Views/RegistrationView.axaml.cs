@@ -1,6 +1,9 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
+using DialogHostAvalonia;
+using System;
+using System.Diagnostics;
 using Avalonia.Markup.Xaml;
-using Microsoft.IdentityModel.Tokens;
 
 namespace СlinicReception.Views
 {

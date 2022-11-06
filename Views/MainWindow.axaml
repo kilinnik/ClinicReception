@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
         Width="{Binding Width}" Height="{Binding Height}"
         x:Class="СlinicReception.Views.MainWindow"
         Icon="/Assets/clinic-logo.ico"
@@ -14,4 +15,9 @@
 	<Design.DataContext>
 		<vm:MainWindowViewModel />
 	</Design.DataContext>
+	<!--<dialogHost:DialogHost isOpen ="{Binding Show}">
+		<dialogHost:DialogHost.DialogContent>
+			<TextBlock Text="{Binding Text}"></TextBlock>
+		</dialogHost:DialogHost.DialogContent>
+	</dialogHost:DialogHost>-->
 </UserControl>

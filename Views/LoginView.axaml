@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
 		xmlns:material="using:Material.Icons.Avalonia"
+		xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.LoginView">
 	<Panel>
@@ -14,7 +15,9 @@
 		</Button>
 		<StackPanel Width="300" MaxWidth="300" Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
 			<TextBlock HorizontalAlignment="Center" IsVisible="{Binding Show}" Foreground="Red" Text="Неправильный логин или пароль"/>
-			<TextBlock Background="Violet" FontSize="20" HorizontalAlignment="Center" >Авторизация</TextBlock>
+			<controls:Card>
+					<TextBlock FontSize="20" HorizontalAlignment="Center" Classes="Headline6" Text="Авторизация" />
+			</controls:Card>
 			<TextBox Text="{Binding Login}" UseFloatingWatermark="True" Classes="outline dense" p1:TextFieldAssist.Label="Логин"/>
 			<TextBox Text="{Binding Password}" UseFloatingWatermark="True" Classes="outline dense revealPasswordButton" p1:TextFieldAssist.Label="Пароль" PasswordChar="*"/>
 			<Button Command="{Binding CheckLogin}">Войти</Button>

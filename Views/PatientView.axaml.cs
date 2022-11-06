@@ -7,6 +7,7 @@ namespace СlinicReception.Views
         public PatientView()
         {
             InitializeComponent();
+
         }
     }
 }

@@ -2,45 +2,103 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
+	    xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+		xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+		xmlns:material="using:Material.Icons.Avalonia"
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.PatientView">
 	<Panel>
-	<StackPanel>
-		<TabControl>
-			<TabItem Header="Запись на приём">
-				<StackPanel>
-					<TextBox  Watermark="Выбор специальности" />
-					<ComboBox SelectedIndex="0">
-						<ComboBoxItem>Терапевт</ComboBoxItem>
-						<ComboBoxItem>Хирург</ComboBoxItem>
-						<ComboBoxItem>Уролог</ComboBoxItem>
-						<ComboBoxItem>Гинеколог</ComboBoxItem>
-						<ComboBoxItem>Дерматолог</ComboBoxItem>
-					</ComboBox>
-					<Calendar Name="DisplayDatesCalendar" SelectionMode="SingleDate"/>
-				</StackPanel>
-			</TabItem>
-			<TabItem Header="Карта пациента">
-				<StackPanel DockPanel.Dock="Top">
-					<TextBox  Watermark="Номер карты" />
-					<TextBox  Watermark="Фамилия" />
-					<TextBox  Watermark="Имя" />
-					<TextBox  Watermark="Отчество" />
-					<TextBox  Watermark="Номер телефона" />
-					<TextBox  Watermark="Номер участка" />
-					<TextBox  Watermark="Адрес проживания" />
-				</StackPanel>
-			</TabItem>
-			<TabItem>
-				<TabItem.Header>
-					<TextBlock VerticalAlignment="Center">Расписание врачей</TextBlock>
-				</TabItem.Header>
-				<StackPanel DockPanel.Dock="Top">
-					<TextBox Text="{Binding SearchText}" Watermark="Введите имя врача или № кабинета" />
-					<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
-				</StackPanel>
-			</TabItem>
-		</TabControl>
-	</StackPanel>
+		<StackPanel Orientation="Horizontal">
+			<TabControl SelectedIndex="1" TabStripPlacement="Left">
+				<!--Запись на приём-->
+				<TabItem>
+					<TabItem.Header>
+						<TextBlock Width="150">Запись на приём</TextBlock>
+					</TabItem.Header>
+					<WrapPanel>
+						<StackPanel Margin="5">
+							<WrapPanel>
+								<ComboBox Classes="Outline" Width="260" SelectedItem="{Binding Speciality, Mode=TwoWay}" Items="{Binding Specialities}" p1:ComboBoxAssist.Label="{Binding TextSpeciality}"/>
+								<TextBlock Height="20" FontSize="18" TextAlignment="Center" Foreground="Red" Text="{Binding WrongSpecialities}"/>
+							</WrapPanel>
+							<WrapPanel>
+								<DatePicker VerticalAlignment="Top" Width="260" Height="80" SelectedDate="{Binding VisitDate}" p1:TextFieldAssist.Label="{Binding TextVisitDate}" />
+								<TextBlock Height="20" FontSize="18" TextAlignment="Center" Foreground="Red" Text="{Binding WrongDate}"/>
+							</WrapPanel>
+							<WrapPanel>
+								<TextBlock Width="140" FontSize="18" VerticalAlignment="Center" Classes="Headline6" Text="{Binding TextTime}" />
+								<Panel>
+									<TextBlock Width="20" FontSize="18" IsEnabled="{Binding EnabledHours}" IsVisible="{Binding VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours1.Value}"></TextBlock>
+									<TextBlock Width="20" FontSize="18" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours2.Value}"></TextBlock>
+								</Panel>
+								<TextBlock FontSize="18" TextAlignment="Center" VerticalAlignment="Center" Classes="Headline6" Text=":"></TextBlock>
+								<TextBlock Width="57" FontSize="18" TextAlignment="Left" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Minutes.Value}"></TextBlock>
+								<Button ToolTip.Tip="Переключить часы" Command="{Binding Switch}" Width="40">
+									<material:MaterialIcon Kind="{Binding Icon}" />
+								</Button>
+								<TextBlock Height="20" FontSize="18" TextAlignment="Center" Foreground="Red" Text="{Binding WrongTime}"/>
+							</WrapPanel>
+							<controls:Card HorizontalAlignment="Left" Width="260">
+								<Panel>
+									<controls:CircleClockPicker Name="Minutes" Height="240" Width="240" Maximum="59" Minimum="0" StepFrequency="5" Value="{Binding Minutes, Mode=TwoWay}"/>
+									<controls:CircleClockPicker Name="Hours1" IsEnabled="{Binding EnabledHours}" IsVisible="{Binding VisibleHours}" Width="160" Height="160" Maximum="11" Minimum="0" StepFrequency="1" Value="{Binding Hours, Mode=TwoWay}"/>
+									<controls:CircleClockPicker Name="Hours2" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" Width="160" Height="160" Maximum="23" Minimum="12" StepFrequency="1" Value="{Binding Hours, Mode=TwoWay}"/>
+								</Panel>
+							</controls:Card>
+							<Button IsEnabled="{Binding OnButton}" HorizontalAlignment="Left" Width="260" Command="{Binding Appointment}">Записаться</Button>
+							<controls:Card Width="260" HorizontalAlignment="Left" IsVisible="{Binding ShowCard}">
+								<StackPanel>
+									<TextBlock IsVisible="{Binding TextAppointmentVisible}" TextWrapping="Wrap" FontSize="15" Width="240" HorizontalAlignment="Center" Classes="Headline6" Text="{Binding TextAppointment}" />
+									<WrapPanel HorizontalAlignment="Center" IsVisible="{Binding ChooseVisible}">
+										<Button Classes="Flat" Background="Blue" Width="60" Command="{Binding Accept}">Да</Button>
+										<Border Width="2"></Border>
+										<Button Classes="Flat" Background="LimeGreen" Width="170" Command="{Binding ChangeData}">Изменить данные</Button>
+									</WrapPanel>
+								</StackPanel>
+							</controls:Card>
+						</StackPanel>
+					</WrapPanel>
+				</TabItem>
+				<!--Карта пациента-->
+				<TabItem>
+					<TabItem.Header>
+						<TextBlock Width="150">Карта пациента</TextBlock>
+					</TabItem.Header>
+					<Panel>
+						<WrapPanel>
+							<StackPanel Width="300" Margin="5">
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Фамилия" Text="{Binding Surname}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Имя" Text="{Binding Name}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Отчество" Text="{Binding Patronymic}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Номер телефона" Text="{Binding Phone}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Дата рождения" Text="{Binding DateOfBirthday}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Адрес" Text="{Binding Adress}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Логин" Text="{Binding Login}" />
+								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled revealPasswordButton" PasswordChar="*" p1:TextFieldAssist.Label="Пароль" Text="{Binding Password}" />
+								<controls:FloatingButton Command="{Binding ChangeUserData}" Width="150" HorizontalContentAlignment="Center" Margin="5" Classes="Accent" VerticalContentAlignment="Center" Content="{Binding TextChangeUserData}" IsExtended="True"/>
+							</StackPanel>
+							<StackPanel Width="300" Margin="5">
+								
+								<controls:FloatingButton Command="{Binding ChangeUserData}" Width="150" HorizontalContentAlignment="Center" Margin="5" Classes="Accent" VerticalContentAlignment="Center" Content="{Binding TextChangeUserData}" IsExtended="True"/>
+							</StackPanel>
+						</WrapPanel>
+					</Panel>
+				</TabItem>
+				<!--Расписание врачей-->
+				<TabItem HorizontalAlignment="Left">
+					<TabItem.Header>
+						<TextBlock Width="150">Расписание врачей</TextBlock>
+					</TabItem.Header>
+					<StackPanel DockPanel.Dock="Top">
+						<TextBox Text="{Binding SearchText}" Watermark="Введите имя врача или № кабинета" />
+						<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+					</StackPanel>
+				</TabItem>
+			</TabControl>
+		</StackPanel>
+		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="160" Height="30">
+			<material:MaterialIcon Kind="Login" />
+		</Button>
 	</Panel>
 </UserControl>

@@ -11,24 +11,37 @@ namespace СlinicReception.ViewModels
 {
     public class LoginViewModel: ViewModelBase
     {
-        MainWindowViewModel mw;
-        string? password;
-        string? login;
+        MainWindowViewModel mw; 
+        public MainWindowViewModel MW
+        {
+            get => mw;
+            private set => this.RaiseAndSetIfChanged(ref mw, value);
+        }
         bool show;
         public bool Show
         {
             get => show;
             private set => this.RaiseAndSetIfChanged(ref show, value);
         }
+        string? login;
         public string? Login
         {
             get => login;
             private set => this.RaiseAndSetIfChanged(ref login, value);
         }
+        string? password;
         public string? Password
         {
             get => password;
             private set => this.RaiseAndSetIfChanged(ref password, value);
+        }
+        public void Registration()
+        {
+            MW.Registration();
+        }
+        public void Theme()
+        {
+            MW.ChangeTheme();
         }
         public void CheckLogin()
         {
@@ -40,28 +53,13 @@ namespace СlinicReception.ViewModels
                 if (db.Log_In.First(x => x.Login == Login).Role == "Главврач") MW.HeadDoctor();
                 if (db.Log_In.First(x => x.Login == Login).Role == "Регистратор") MW.Registrar();
                 if (db.Log_In.First(x => x.Login == Login).Role == "Врач") MW.Doctor();
-                if (db.Log_In.First(x => x.Login == Login).Role == "Пациент") MW.Patient();
+                if (db.Log_In.First(x => x.Login == Login).Role == "Пациент") MW.Patient((int)db.Log_In.First(x => x.Login == Login).ID);
             }
             else Show = true;
 
         }
-        public MainWindowViewModel MW
-        {
-            get => mw;
-            private set => this.RaiseAndSetIfChanged(ref mw, value);
-        }
-        public void Registration()
-        {
-            MW.Registration();
-        }
-        public void Theme()
-        {
-            MW.ChangeTheme();
-        }
-        СlinicReceptionContext DB = new СlinicReceptionContext();
         public LoginViewModel(MainWindowViewModel mw)
         {
-            using var db = new СlinicReceptionContext();
             MW = mw; show = false;
         }
     }

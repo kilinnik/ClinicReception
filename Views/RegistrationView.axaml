@@ -14,17 +14,15 @@
 			<Setter Property="SelectedDate" Value="Введите дату рождения"/>
 		</Style>
 	</UserControl.Styles>-->
-	<!--<dialogHost:DialogHost isOpen ="{Binding Show}">
-		<dialogHost:DialogHost.DialogContent>
-			<TextBlock Text="{Binding Text}"></TextBlock>
-		</dialogHost:DialogHost.DialogContent>-->
-		<Panel>
+		<Panel>			
 			<Button Command="{Binding Back}" Background="DarkSalmon" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="30">Назад</Button>
 			<Button Command="{Binding Theme}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
 				<material:MaterialIcon Kind="ThemeLightDark"></material:MaterialIcon>
 			</Button>
 			<StackPanel MaxWidth="450" Width="450" Spacing="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-				<TextBlock Background="HotPink" FontSize="20" HorizontalAlignment="Center" >Регистрация</TextBlock>
+				<controls:Card>
+					<TextBlock FontSize="20" HorizontalAlignment="Center" Classes="Headline6" Text="Регистрация" />
+				</controls:Card>
 				<TextBox UseFloatingWatermark="{Binding Show}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding TextSurname}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding TextName}"/>
 				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding TextPatronymic}"/>
@@ -32,8 +30,7 @@
 				<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}" />			
 				<WrapPanel>
 					<TextBlock VerticalAlignment="Center" FontSize="18" Width="60">Адрес:</TextBlock>
-					<ComboBox  Classes="Outline" SelectedItem="{Binding Street}" SelectedIndex="{Binding Index}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding TextAdress}">
-					</ComboBox>
+					<ComboBox Classes="Outline" SelectedItem="{Binding Street}" SelectedIndex="{Binding Index}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding TextAdress}"/>
 					<TextBox Width="75" Text="{Binding House}" Watermark="Дом" />
 					<TextBox Width="75" Text="{Binding Flat}" Watermark="Квартира"/>
 				</WrapPanel>
@@ -42,5 +39,4 @@
 				<Button Command="{Binding Registration}">Зарегестрироваться</Button>
 			</StackPanel>
 		</Panel>
-	<!--</dialogHost:DialogHost>-->
 </UserControl>

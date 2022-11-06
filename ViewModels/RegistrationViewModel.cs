@@ -10,145 +10,141 @@ using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using СlinicReception.Services;
+using Material.Dialog;
+using Material.Dialog.Enums;
 
 namespace СlinicReception.ViewModels
 {
     public class RegistrationViewModel: ViewModelBase
     {
         static List<List<string>> ListOfArea = new List<List<string>>() { new List<string> {"ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> {"ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> {"ул. Филатова", "Школьная ул." } };
-        bool show;
-        MainWindowViewModel mw;
-        string? surname;
-        string? name;
-        string? patronymic;
-        long? phone;
-        string? dateOfBirthday;
-        //string? adress;
-        string? login;
-        string? password;
-        string? textSurname;
-        string? textName;
-        string? textPatronymic;
-        string? textPhone;
-        string? textDateOfBirthday;
-        string? textAdress;
-        string? textLogin;
-        string? textPassword;
-        ObservableCollection<TextBlock>  streets = new ObservableCollection<TextBlock>();
-        string? street;
-        int? house;
-        int? flat;
-        int index;
-        public int Index
+        int? index;
+        public int? Index
         {
             get => index;
             set => this.RaiseAndSetIfChanged(ref index, value);
         }
-        public string? Street
+        TextBlock? street;
+        public TextBlock? Street
         {
             get => street;
             set => this.RaiseAndSetIfChanged(ref street, value);
         }
+        int? house;
         public int? House
         {
             get => house;
             set => this.RaiseAndSetIfChanged(ref house, value);
         }
+        int? flat;
         public int? Flat
         {
             get => flat;
             set => this.RaiseAndSetIfChanged(ref flat, value);
         }
+        ObservableCollection<TextBlock> streets = new ObservableCollection<TextBlock>();
         public ObservableCollection<TextBlock> Streets
         { 
             get =>  streets;
             set => this.RaiseAndSetIfChanged(ref streets, value);
         }
+        string? textSurname;
         public string? TextSurname
         {
             get => textSurname;
             set => this.RaiseAndSetIfChanged(ref textSurname, value);
         }
+        string? textName;
         public string? TextName
         {
             get => textName;
             set => this.RaiseAndSetIfChanged(ref textName, value);
         }
+        string? textPatronymic;
         public string? TextPatronymic
         {
             get => textPatronymic;
             set => this.RaiseAndSetIfChanged(ref textPatronymic, value);
         }
+        string? textPhone;
         public string? TextPhone
         {
             get => textPhone;
             set => this.RaiseAndSetIfChanged(ref textPhone, value);
         }
+        string? textDateOfBirthday;
         public string? TextDateOfBirthday
         {
             get => textDateOfBirthday;
             set => this.RaiseAndSetIfChanged(ref textDateOfBirthday, value);
         }
+        string? textAdress;
         public string? TextAdress
         {
             get => textAdress;
             set => this.RaiseAndSetIfChanged(ref textAdress, value);
         }
+        string? textLogin;
         public string? TextLogin
         {
             get => textLogin; 
             set => this.RaiseAndSetIfChanged(ref textLogin, value);
         }
+        string? textPassword;
         public string? TextPassword
         {
             get => textPassword;
             set => this.RaiseAndSetIfChanged(ref textPassword, value);
         }
+        string? surname;
         public string? Surname
         {
             get => surname;
             private set => this.RaiseAndSetIfChanged(ref surname, value);
         }
+        string? name;
         public string? Name
         {
             get => name;
             private set => this.RaiseAndSetIfChanged(ref name, value);
         }
+        string? patronymic;
         public string? Patronymic
         {
             get => patronymic;
             private set => this.RaiseAndSetIfChanged(ref patronymic, value);
         }
+        long? phone;
         public long? Phone
         {
             get => phone;
             private set => this.RaiseAndSetIfChanged(ref phone, value);
         }
+        string? dateOfBirthday;
         public string? DateOfBirthday
         {
             get => dateOfBirthday;
             private set => this.RaiseAndSetIfChanged(ref dateOfBirthday, value);
         }
-        //public string? Adress
-        //{
-        //    get => adress;
-        //    private set => this.RaiseAndSetIfChanged(ref adress, value);
-        //}
+        string? login;
         public string? Login
         {
             get => login;
             private set => this.RaiseAndSetIfChanged(ref login, value);
         }
+        string? password;
         public string? Password
         {
             get => password;
             private set => this.RaiseAndSetIfChanged(ref password, value);
         }
+        MainWindowViewModel mw;
         public MainWindowViewModel MW
         {
             get => mw;
             private set => this.RaiseAndSetIfChanged(ref mw, value);
         }
+        bool show;
         public bool Show
         {
             get => show;
@@ -175,7 +171,7 @@ namespace СlinicReception.ViewModels
             if (Phone == null) TextPhone = "Введите номер телефона";
             else if (Phone.ToString()?.Length != 10) TextPhone = "Неверный формат номера телефона";
             if (DateOfBirthday == null) TextDateOfBirthday = "Выберете дату рождения";
-            else if (Convert.ToDateTime(DateOfBirthday) > DateTime.Today) TextDateOfBirthday = "Неверная дата рождения";
+            else if (Convert.ToDateTime(DateOfBirthday) > DateTime.Today) TextDateOfBirthday = "Некорректная дата рождения";
             if (Street == null || House == null) TextAdress = "Введите адрес";
             if (Login == null) TextLogin = "Введите логин";
             else if (db.Log_In.Any(x => x.Login == Login)) TextLogin = "Такой логин уже существует";
@@ -190,7 +186,7 @@ namespace СlinicReception.ViewModels
                 db.Add(new Patient(db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты + 1, Surname, Name, Patronymic, (long)Phone, Convert.ToDateTime(DateOfBirthday), area, adress));
                 db.Add(new DataLogin(Login, Password, "Пациент", db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты + 1));
                 db.SaveChanges();
-                MW.Patient();
+                MW.Patient(db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты);
             }
             else Show = true;
         }

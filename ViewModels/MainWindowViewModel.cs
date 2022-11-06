@@ -10,20 +10,19 @@ namespace СlinicReception.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        ViewModelBase content;
-        int height;
         int width;
         public int Width
         {
             get => width;
             private set => this.RaiseAndSetIfChanged(ref width, value);
         }
+        int height;
         public int Height
         {
             get => height;
             private set => this.RaiseAndSetIfChanged(ref height, value);
         }
-
+        ViewModelBase content;
         public ViewModelBase Content
         {
             get => content;
@@ -49,9 +48,9 @@ namespace СlinicReception.ViewModels
         {
             Content = new DoctorViewModel();
         }
-        public void Patient()
+        public void Patient(int id)
         {
-            Content = new PatientViewModel();
+            Content = new PatientViewModel(id, this);
         }
         public void Registration()
         {

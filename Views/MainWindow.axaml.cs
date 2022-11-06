@@ -1,5 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
+using System.Diagnostics;
 using СlinicReception.ViewModels;
 
 namespace СlinicReception.Views
@@ -9,6 +11,9 @@ namespace СlinicReception.Views
         public MainWindow()
         {
             InitializeComponent();
+#if DEBUG
+            this.AttachDevTools();
+#endif
             DataContext = new MainWindowViewModel();
         }
     }

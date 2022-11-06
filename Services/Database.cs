@@ -103,9 +103,9 @@ namespace СlinicReception.Services
     {
         [Key]
         public int Номер_визита { get; set; }
-        public string Жалобы { get; set; }
-        public int Код_диагноза { get; set; }
-        public Complaints(int номер_визита, string жалобы, int код_диагноза)
+        public string? Жалобы { get; set; }
+        public int? Код_диагноза { get; set; }
+        public Complaints(int номер_визита, string? жалобы, int? код_диагноза)
         {
             Номер_визита = номер_визита;
             Жалобы = жалобы;
