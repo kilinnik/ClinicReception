@@ -5,17 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using СlinicReception.Models;
 using СlinicReception.Services;
 
 namespace СlinicReception.ViewModels
 {
-    public class PatientViewModel: ViewModelBase
+    public class PatientViewModel : ViewModelBase
     {
+        //Запись на приём
         Dictionary<string, string> DaysWeek = new Dictionary<string, string>() { { "Пн-Пт", "Monday, Tuesday, Wednesday, Thursday, Friday" }, { "Пн-Чт", "Monday, Tuesday, Wednesday, Thursday" }, { "Вт-Пт", "Tuesday, Wednesday, Thursday, Friday" }, { "Вт-Сб", "Tuesday, Wednesday, Thursday, Friday, Saturday" } };
-        int ID { get; set; } 
+        int ID { get; set; }
         ObservableCollection<TextBlock> specialities = new ObservableCollection<TextBlock>();
         public ObservableCollection<TextBlock> Specialities
         {
@@ -28,12 +32,7 @@ namespace СlinicReception.ViewModels
             get => speciality;
             set => this.RaiseAndSetIfChanged(ref speciality, value);
         }
-        bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => this.RaiseAndSetIfChanged(ref _isBusy, value);
-        }
+        
         bool showCard;
         public bool ShowCard
         {
@@ -58,12 +57,6 @@ namespace СlinicReception.ViewModels
             get => visibleHours;
             set => this.RaiseAndSetIfChanged(ref visibleHours, value);
         }
-        string? _searchText;
-        public string? SearchText
-        {
-            get => _searchText;
-            set => this.RaiseAndSetIfChanged(ref _searchText, value);
-        }
         bool onButton;
         public bool OnButton
         {
@@ -87,7 +80,7 @@ namespace СlinicReception.ViewModels
         {
             get => textSpeciality;
             set => this.RaiseAndSetIfChanged(ref textSpeciality, value);
-        }       
+        }
         string? visitDate;
         public string? VisitDate
         {
@@ -163,7 +156,7 @@ namespace СlinicReception.ViewModels
             WrongSpecialities = null; WrongDate = null; WrongTime = null;
             if (Speciality == null) WrongSpecialities = "выберете специальность";
             if (VisitDate == null) WrongDate = "выберете дату";
-            else if (Convert.ToDateTime(VisitDate) <= DateTime.Today) WrongDate = "некорректная дата";       
+            else if (Convert.ToDateTime(VisitDate) <= DateTime.Today) WrongDate = "некорректная дата";
             if (Hours < 8 || Hours >= 20) WrongTime = "некорректное время";
             if (WrongSpecialities == null && WrongDate == null && WrongTime == null) CheckData();
         }
@@ -185,6 +178,7 @@ namespace СlinicReception.ViewModels
                         db.Приём.Add(new Visit(visitNumber, doctor.Табельный_номер, db.Пациент.First(x => x.Номер_карты == ID).Номер_карты, date));
                         db.Жалобы.Add(new Complaints(visitNumber, null, null));
                         db.SaveChanges();
+                        FillGrid();
                     }
                     else
                     {
@@ -232,7 +226,7 @@ namespace СlinicReception.ViewModels
             foreach (var t in time)
             {
                 var temp = t.Split("-");
-                if (Convert.ToUInt32(temp[0].Substring(0,2)) <= hours && Convert.ToUInt32(temp[1].Substring(0, 2)) > hours) result = true;
+                if (Convert.ToUInt32(temp[0].Substring(0, 2)) <= hours && Convert.ToUInt32(temp[1].Substring(0, 2)) > hours) result = true;
             }
             return result;
         }
@@ -246,6 +240,7 @@ namespace СlinicReception.ViewModels
             db.Приём.Add(new Visit(visitNumber, db.Врач.First(x => x.Номер_участка == db.Пациент.First(y => y.Номер_карты == ID).Номер_участка && x.Специальность == Speciality.Text).Табельный_номер, db.Пациент.First(x => x.Номер_карты == ID).Номер_карты, date));
             db.Жалобы.Add(new Complaints(visitNumber, null, null));
             db.SaveChanges();
+            FillGrid();
         }
         public void ChangeData()
         {
@@ -262,19 +257,14 @@ namespace СlinicReception.ViewModels
                 Icon = "ToggleSwitchOffOutline"; EnabledHours = true; VisibleHours = true;
             }
         }
-        public PatientViewModel(int id, MainWindowViewModel mw)
+        //Карта пациента
+        public ObservableCollection<DataVisit> dataVisits;
+        public ObservableCollection<DataVisit> DataVisits
         {
-            MW = mw; ID = id; TextSpeciality = "Специальность врача"; OnButton = true; TextVisitDate = "Дата приёма"; Icon = "ToggleSwitchOffOutline"; EnabledHours = true; VisibleHours = true; Hours = 0; Minutes = 0; TextTime = "Время приёма"; OnButton = true;
-            using var db = new СlinicReceptionContext();
-            var listSpecialities = db.Врач.Where(x => x.Номер_участка == db.Пациент.First(y => y.Номер_карты == id).Номер_участка).Select(x => x.Специальность).Distinct();
-            foreach (var item in listSpecialities)
-            {
-                Specialities.Add(new TextBlock { Text = item });
-            }
-
-            var user = db.Пациент.First(y => y.Номер_карты == id); var userl = db.Log_In.First(x => x.ID == ID && x.Role == "Пациент"); TextChangeUserData = "Изменить данные";
-            Surname = user.Фамилия; Name = user.Имя; Patronymic = user.Отчество; Phone = user.Телефон; DateOfBirthday = user.Дата_рождения.ToString().Substring(0, 10); Adress = user.Адрес; Login = userl.Login; Password = userl.Password; 
+            get => dataVisits;
+            private set => this.RaiseAndSetIfChanged(ref dataVisits, value);
         }
+
         string? textChangeUserData;
         public string? TextChangeUserData
         {
@@ -329,6 +319,10 @@ namespace СlinicReception.ViewModels
             get => password;
             private set => this.RaiseAndSetIfChanged(ref password, value);
         }
+        public void FillGrid()
+        {
+            DataVisits = new ObservableCollection<DataVisit>(GenerateMockDataVisitTable());
+        }
         public void ChangeUserData()
         {
             if (TextChangeUserData == "Изменить данные")
@@ -341,10 +335,84 @@ namespace СlinicReception.ViewModels
                 TextChangeUserData = "Изменить данные";
                 ShowUserData = false;
                 using var db = new СlinicReceptionContext();
-                var user = db.Пациент.First(y => y.Номер_карты == ID); var userl = db.Log_In.First(x => x.ID == ID && x.Role == "Пациент"); 
+                var user = db.Пациент.First(y => y.Номер_карты == ID); var userl = db.Log_In.First(x => x.ID == ID && x.Role == "Пациент");
                 user.Фамилия = Surname; user.Имя = Name; user.Отчество = Patronymic; user.Телефон = Phone; user.Дата_рождения = Convert.ToDateTime(DateOfBirthday); user.Адрес = Adress; userl.Login = Login; userl.Password = Password;
                 db.SaveChanges();
             }
         }
+        private IEnumerable<DataVisit> GenerateMockDataVisitTable()
+        {
+            var dataVisit = new List<DataVisit>();
+            using var db = new СlinicReceptionContext();
+            var visits = db.Приём.Where(x => x.Дата_приёма > DateTime.Now && x.Номер_карты == ID).OrderBy(x => x.Дата_приёма).ToArray();
+            foreach (var item in visits)
+            {
+                var doctor = db.Врач.First(x => x.Табельный_номер == item.Табельный_номер);
+                string name = $"{doctor.Фамилия} {doctor.Имя[0]}.{doctor.Отчество[0]}.";
+                dataVisit.Add(new DataVisit() { DateTime = item.Дата_приёма.ToString("MM/dd/yyyy HH:mm"), Speciality = doctor.Специальность, Name = name, Office = db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер).Номер_кабинета });
+            }
+            return dataVisit;
+        }
+        public PatientViewModel(int id, MainWindowViewModel mw)
+        {
+            MW = mw; ID = id; TextSpeciality = "Специальность врача"; OnButton = true; TextVisitDate = "Дата приёма"; Icon = "ToggleSwitchOffOutline"; EnabledHours = true; VisibleHours = true; Hours = 0; Minutes = 0; TextTime = "Время приёма"; OnButton = true;
+            using var db = new СlinicReceptionContext();
+            var listSpecialities = db.Врач.Where(x => x.Номер_участка == db.Пациент.First(y => y.Номер_карты == id).Номер_участка).Select(x => x.Специальность).Distinct();
+            foreach (var item in listSpecialities)
+            {
+                Specialities.Add(new TextBlock { Text = item });
+            }
+
+            var user = db.Пациент.First(y => y.Номер_карты == id); var userl = db.Log_In.First(x => x.ID == ID && x.Role == "Пациент"); TextChangeUserData = "Изменить данные";
+            Surname = user.Фамилия; Name = user.Имя; Patronymic = user.Отчество; Phone = user.Телефон; DateOfBirthday = user.Дата_рождения.ToString("MM/dd/yyyy"); Adress = user.Адрес; Login = userl.Login; Password = userl.Password;
+            FillGrid();
+
+            this.WhenAnyValue(x => x.SearchText).Subscribe(DoSearch!);
+        }
+        //Расписание врачей
+        public ObservableCollection<TimetableDoctors> SearchResults { get; } = new();
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => this.RaiseAndSetIfChanged(ref _isBusy, value);
+        }
+        private bool showTimetable;
+        public bool ShowTimetable
+        {
+            get => showTimetable;
+            set => this.RaiseAndSetIfChanged(ref showTimetable, value);
+        }
+        private string? _searchText;
+        public string? SearchText
+        {
+            get => _searchText;
+            set => this.RaiseAndSetIfChanged(ref _searchText, value);
+        }
+        private void DoSearch(string s)
+        {
+            IsBusy = true;
+            SearchResults.Clear();
+            using var db = new СlinicReceptionContext();
+            var doctors = db.Врач.Where(x => x.Номер_участка == db.Пациент.First(y => y.Номер_карты == ID).Номер_участка).ToArray();
+            foreach (var doctor in doctors)
+            {
+                string name = $"{doctor.Фамилия} {doctor.Имя[0]}.{doctor.Отчество[0]}.";
+                var timetable = db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер);
+                if (s != null && (timetable.Номер_кабинета.ToString().Contains(s) || name.ToLower().Contains(s.ToLower())))
+                {
+                    SearchResults.Add(new TimetableDoctors() { Name = name, Speciality = doctor.Специальность, Office = timetable.Номер_кабинета, Days = timetable.Дни_приёма, Time = timetable.Часы_приёма });
+                    ShowTimetable = true;
+                }
+                if (s == "") ShowTimetable = false;
+            }
+            IsBusy = false;
+        }
+        //public IEnumerable<TimetableDoctors> ListTimetable(string s)
+        //{
+        //    using var db = new СlinicReceptionContext();
+        //    var timetables = db.Where
+        //    return;
+        //}
     }
 }

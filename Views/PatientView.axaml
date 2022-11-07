@@ -10,7 +10,7 @@
         x:Class="СlinicReception.Views.PatientView">
 	<Panel>
 		<StackPanel Orientation="Horizontal">
-			<TabControl SelectedIndex="1" TabStripPlacement="Left">
+			<TabControl SelectedIndex="2" TabStripPlacement="Left">
 				<!--Запись на приём-->
 				<TabItem>
 					<TabItem.Header>
@@ -78,9 +78,20 @@
 								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled revealPasswordButton" PasswordChar="*" p1:TextFieldAssist.Label="Пароль" Text="{Binding Password}" />
 								<controls:FloatingButton Command="{Binding ChangeUserData}" Width="150" HorizontalContentAlignment="Center" Margin="5" Classes="Accent" VerticalContentAlignment="Center" Content="{Binding TextChangeUserData}" IsExtended="True"/>
 							</StackPanel>
-							<StackPanel Width="300" Margin="5">
-								
-								<controls:FloatingButton Command="{Binding ChangeUserData}" Width="150" HorizontalContentAlignment="Center" Margin="5" Classes="Accent" VerticalContentAlignment="Center" Content="{Binding TextChangeUserData}" IsExtended="True"/>
+							<StackPanel Margin="5">
+								<controls:Card HorizontalAlignment="Center" IsVisible="{Binding}">
+										<TextBlock IsVisible="{Binding}" TextAlignment="Center" HorizontalAlignment="Center" Classes="Headline6" Text="Список приёмов" />								
+								</controls:Card>
+								<Grid>
+									<DataGrid MaxWidth="550" Height="415" IsReadOnly="True" Items="{Binding DataVisits}">
+										<DataGrid.Columns>
+											<DataGridTextColumn Header="Дата приёма" Binding="{Binding DateTime}"/>
+											<DataGridTextColumn Header="Специальность" Binding="{Binding Speciality}"/>
+											<DataGridTextColumn Header="ФИО врача" Binding="{Binding Name}"/>
+											<DataGridTextColumn Header="Кабинет" Binding="{Binding Office}"/>
+										</DataGrid.Columns>
+									</DataGrid>
+								</Grid>
 							</StackPanel>
 						</WrapPanel>
 					</Panel>
@@ -90,14 +101,40 @@
 					<TabItem.Header>
 						<TextBlock Width="150">Расписание врачей</TextBlock>
 					</TabItem.Header>
-					<StackPanel DockPanel.Dock="Top">
-						<TextBox Text="{Binding SearchText}" Watermark="Введите имя врача или № кабинета" />
-						<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
-					</StackPanel>
+					<DockPanel Margin="5">
+						<StackPanel DockPanel.Dock="Top">
+							<TextBox Text="{Binding SearchText}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Введите имя врача или № кабинета" CornerRadius="32" Margin="8">
+								<TextBox.InnerLeftContent>
+									<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
+										<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
+									</Border>
+								</TextBox.InnerLeftContent>
+							</TextBox>
+							<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+						</StackPanel>
+						<Grid IsVisible="{Binding ShowTimetable}">
+							<DataGrid Height="570" IsReadOnly="True" Items="{Binding SearchResults}">
+								<DataGrid.Columns>
+									<DataGridTextColumn Header="ФИО врача" Binding="{Binding Name}"/>
+									<DataGridTextColumn Header="Специальность" Binding="{Binding Speciality}"/>
+									<DataGridTextColumn Header="Кабинет" Binding="{Binding Office}"/>
+									<DataGridTextColumn Header="Дни приёмов" Binding="{Binding Days}"/>
+									<DataGridTextColumn Header="Часы приёмов" Binding="{Binding Time}"/>									
+								</DataGrid.Columns>
+							</DataGrid>
+						</Grid>
+						<!--<ListBox Items="{Binding SearchResults}">
+							<ListBox.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel />
+								</ItemsPanelTemplate>
+							</ListBox.ItemsPanel>
+						</ListBox>-->
+					</DockPanel>
 				</TabItem>
 			</TabControl>
 		</StackPanel>
-		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="160" Height="30">
+		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Height="30">
 			<material:MaterialIcon Kind="Login" />
 		</Button>
 	</Panel>
