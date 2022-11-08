@@ -38,15 +38,15 @@ namespace СlinicReception.ViewModels
         }
         public void HeadDoctor()
         {
-            Content = new HeadDoctorViewModel();
+            Content = new HeadDoctorViewModel(this);
         }
         public void Registrar()
         {
             Content = new RegistrarViewModel();
         }
-        public void Doctor()
+        public void Doctor(int id)
         {
-            Content = new DoctorViewModel();
+            Content = new DoctorViewModel(id, this);
         }
         public void Patient(int id)
         {

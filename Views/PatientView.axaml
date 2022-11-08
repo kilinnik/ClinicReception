@@ -10,7 +10,7 @@
         x:Class="СlinicReception.Views.PatientView">
 	<Panel>
 		<StackPanel Orientation="Horizontal">
-			<TabControl SelectedIndex="2" TabStripPlacement="Left">
+			<TabControl Margin="5" TabStripPlacement="Left">
 				<!--Запись на приём-->
 				<TabItem>
 					<TabItem.Header>
@@ -109,8 +109,7 @@
 										<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
 									</Border>
 								</TextBox.InnerLeftContent>
-							</TextBox>
-							<ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+							</TextBox>							
 						</StackPanel>
 						<Grid IsVisible="{Binding ShowTimetable}">
 							<DataGrid Height="570" IsReadOnly="True" Items="{Binding SearchResults}">

@@ -349,7 +349,7 @@ namespace СlinicReception.ViewModels
             {
                 var doctor = db.Врач.First(x => x.Табельный_номер == item.Табельный_номер);
                 string name = $"{doctor.Фамилия} {doctor.Имя[0]}.{doctor.Отчество[0]}.";
-                dataVisit.Add(new DataVisit() { DateTime = item.Дата_приёма.ToString("MM/dd/yyyy HH:mm"), Speciality = doctor.Специальность, Name = name, Office = db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер).Номер_кабинета });
+                dataVisit.Add(new DataVisit() { DateTime = item.Дата_приёма.ToString("dd/MM/yyyy HH:mm"), Speciality = doctor.Специальность, Name = name, Office = (int)db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер).Номер_кабинета });
             }
             return dataVisit;
         }
@@ -364,19 +364,13 @@ namespace СlinicReception.ViewModels
             }
 
             var user = db.Пациент.First(y => y.Номер_карты == id); var userl = db.Log_In.First(x => x.ID == ID && x.Role == "Пациент"); TextChangeUserData = "Изменить данные";
-            Surname = user.Фамилия; Name = user.Имя; Patronymic = user.Отчество; Phone = user.Телефон; DateOfBirthday = user.Дата_рождения.ToString("MM/dd/yyyy"); Adress = user.Адрес; Login = userl.Login; Password = userl.Password;
+            Surname = user.Фамилия; Name = user.Имя; Patronymic = user.Отчество; Phone = user.Телефон; DateOfBirthday = user.Дата_рождения.ToString("dd/MM/yyyy"); Adress = user.Адрес; Login = userl.Login; Password = userl.Password;
             FillGrid();
 
             this.WhenAnyValue(x => x.SearchText).Subscribe(DoSearch!);
         }
         //Расписание врачей
-        public ObservableCollection<TimetableDoctors> SearchResults { get; } = new();
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => this.RaiseAndSetIfChanged(ref _isBusy, value);
-        }
+        public ObservableCollection<TimetableDoctors> SearchResults { get; } = new();       
         private bool showTimetable;
         public bool ShowTimetable
         {
@@ -391,7 +385,6 @@ namespace СlinicReception.ViewModels
         }
         private void DoSearch(string s)
         {
-            IsBusy = true;
             SearchResults.Clear();
             using var db = new СlinicReceptionContext();
             var doctors = db.Врач.Where(x => x.Номер_участка == db.Пациент.First(y => y.Номер_карты == ID).Номер_участка).ToArray();
@@ -401,12 +394,11 @@ namespace СlinicReception.ViewModels
                 var timetable = db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер);
                 if (s != null && (timetable.Номер_кабинета.ToString().Contains(s) || name.ToLower().Contains(s.ToLower())))
                 {
-                    SearchResults.Add(new TimetableDoctors() { Name = name, Speciality = doctor.Специальность, Office = timetable.Номер_кабинета, Days = timetable.Дни_приёма, Time = timetable.Часы_приёма });
+                    SearchResults.Add(new TimetableDoctors() { Name = name, Speciality = doctor.Специальность, Office = (int)timetable.Номер_кабинета, Days = timetable.Дни_приёма, Time = timetable.Часы_приёма });
                     ShowTimetable = true;
                 }
                 if (s == "") ShowTimetable = false;
             }
-            IsBusy = false;
         }
         //public IEnumerable<TimetableDoctors> ListTimetable(string s)
         //{

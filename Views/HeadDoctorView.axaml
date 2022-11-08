@@ -2,29 +2,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
+			 xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+			 xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+			 xmlns:material="using:Material.Icons.Avalonia"
+			 mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
              x:Class="СlinicReception.Views.HeadDoctorView">
 	<Panel>
-		<StackPanel>
-			<TabControl>
-				<TabItem Header="Информация о главном враче" VerticalContentAlignment="Center">
-					<StackPanel DockPanel.Dock="Top">
-						<TextBox  Watermark="Стаж работы" />
-						<TextBox  Watermark="Достижения и заслуженные награды" />
-						<TextBox  Watermark="Cнизу добавим фотку врача и описание к нему, я займусь этим чуть позже" />
-						<TextBox  Watermark="Кнопка Перейти должна помогать в переходах между страницами, но надо реализовать, как с пациентом" />
-						<Button  Command="{Binding $parent[Window].DataContext.Patient}">Перейти</Button>
+		<StackPanel Orientation="Horizontal">
+			<TabControl SelectedIndex="1" Margin="5" TabStripPlacement="Left">
+				<!--Запись на приём-->
+				<TabItem>
+					<TabItem.Header>
+						<TextBlock Width="70">Удалить</TextBlock>
+					</TabItem.Header>
+					<StackPanel>
+						<DockPanel Margin="5">
+							<StackPanel>
+								<TextBox HorizontalAlignment="Left" Width="400" Text="{Binding SearchText}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Введите имя удаляемого врача" CornerRadius="32" Margin="8">
+									<TextBox.InnerLeftContent>
+										<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
+											<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
+										</Border>
+									</TextBox.InnerLeftContent>
+								</TextBox>
+								<WrapPanel>
+									<Grid IsVisible="{Binding ShowTimetable}">
+										<DataGrid Height="570" IsReadOnly="True" Items="{Binding SearchResults}">
+											<DataGrid.Columns>
+												<DataGridTextColumn Header="Фамилия" Binding="{Binding Фамилия}"/>
+												<DataGridTextColumn Header="Имя" Binding="{Binding Имя}"/>
+												<DataGridTextColumn Header="Отчество" Binding="{Binding Отчество}"/>
+												<DataGridTextColumn Header="Стаж" Binding="{Binding Стаж}"/>
+												<DataGridTextColumn Header="Специальность" Binding="{Binding Специальность}"/>
+												<DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
+											</DataGrid.Columns>
+										</DataGrid>
+									</Grid>
+									<Button VerticalAlignment="Top" Height="30" IsVisible="{Binding ShowDeleteButton}" Command="{Binding DeleteDoctor}" HorizontalAlignment="Left" Width="100" Classes="Outline Dark" Content="Удалить" ></Button>
+								</WrapPanel>
+							</StackPanel>
+
+							<!--<ListBox Items="{Binding SearchResults}">
+							<ListBox.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel />
+								</ItemsPanelTemplate>
+							</ListBox.ItemsPanel>
+						</ListBox>-->
+						</DockPanel>
 					</StackPanel>
 				</TabItem>
 				<TabItem>
 					<TabItem.Header>
-						<TextBlock VerticalAlignment="Center">Получение сведений о занятости кабинетов</TextBlock>
+						<TextBlock Width="70">Добавить</TextBlock>
 					</TabItem.Header>
-					<StackPanel DockPanel.Dock="Top">
-						<TextBox  Watermark="Вывод информации о кабинетах и специалистах" />
+					<StackPanel Margin="5" MaxWidth="350" Width="350" Spacing="5">						
+						<TextBox Watermark="Фамилия" Text="{Binding Surname}"/>
+						<TextBox Text="{Binding Name}" Watermark="Имя"/>
+						<TextBox Text="{Binding Patronymic}" Watermark="Отчество"/>						
+						<DatePicker SelectedDate="{Binding HireDate}" p1:TextFieldAssist.Label="Дата приёма на работу" />
+						<TextBox Text="{Binding Seniority}" Watermark="Стаж"/>
+						<TextBox Text="{Binding Adress}" Watermark="Адрес"/>
+						<TextBox Text="{Binding Speciality}" Watermark="Специальность"/>
+						<TextBox Text="{Binding AreaNumber}" Watermark="Номер участка"/>
+						<TextBox Text="{Binding Phone}" Watermark="Телефон"/>
+						<Button Width="200" Command="{Binding AddDoctorButton}">Добавить врача</Button>
+						<TextBlock IsVisible="{Binding SuccessAddDoctor}" Margin="20" HorizontalAlignment="Center">Врач добавлен</TextBlock>
 					</StackPanel>
 				</TabItem>
 			</TabControl>
 		</StackPanel>
+		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Height="30">
+			<material:MaterialIcon Kind="Login" />
+		</Button>
 	</Panel>
 </UserControl>

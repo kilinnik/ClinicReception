@@ -149,10 +149,10 @@ namespace СlinicReception.Services
     {
         [Key]
         public int Табельный_номер { get; set; }
-        public string Дни_приёма { get; set; }
-        public string Часы_приёма { get; set; }
-        public int Номер_кабинета { get; set; }
-        public Timetable(int табельный_номер, string дни_приёма, string часы_приёма, int номер_кабинета)
+        public string? Дни_приёма { get; set; }
+        public string? Часы_приёма { get; set; }
+        public int? Номер_кабинета { get; set; }
+        public Timetable(int табельный_номер, string? дни_приёма, string? часы_приёма, int? номер_кабинета)
         {
             Табельный_номер = табельный_номер;
             Дни_приёма = дни_приёма;

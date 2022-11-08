@@ -52,7 +52,7 @@ namespace СlinicReception.ViewModels
                 if (db.Log_In.First(x => x.Login == Login).Role == "Админ данных") MW.DataAdmin();
                 if (db.Log_In.First(x => x.Login == Login).Role == "Главврач") MW.HeadDoctor();
                 if (db.Log_In.First(x => x.Login == Login).Role == "Регистратор") MW.Registrar();
-                if (db.Log_In.First(x => x.Login == Login).Role == "Врач") MW.Doctor();
+                if (db.Log_In.First(x => x.Login == Login).Role == "Врач") MW.Doctor((int)db.Log_In.First(x => x.Login == Login).ID);
                 if (db.Log_In.First(x => x.Login == Login).Role == "Пациент") MW.Patient((int)db.Log_In.First(x => x.Login == Login).ID);
             }
             else Show = true;
