@@ -10,57 +10,68 @@ namespace СlinicReception.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        int width;
+        int width; //ширина окна
         public int Width
         {
             get => width;
             private set => this.RaiseAndSetIfChanged(ref width, value);
         }
-        int height;
+
+        int height;//высота окна
         public int Height
         {
             get => height;
             private set => this.RaiseAndSetIfChanged(ref height, value);
         }
-        ViewModelBase content;
+
+        ViewModelBase content;//текущее содержимое окна
         public ViewModelBase Content
         {
             get => content;
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
-        public void DbAdmin()
+
+        public void DbAdmin() //view админа бд
         {
-            Content = new DbAdminViewModel();
+            Content = new DbAdminViewModel(this);
         }
-        public void DataAdmin()
+
+        public void DataAdmin() //view админа данных
         {
-            Content = new DataAdminViewModel();
+            Content = new DataAdminViewModel(this);
         }
-        public void HeadDoctor()
+
+        public void HeadDoctor() //view главврача
         {
             Content = new HeadDoctorViewModel(this);
         }
-        public void Registrar()
+
+        public void Registrar() //view регистратора
         {
-            Content = new RegistrarViewModel();
+            Content = new RegistrarViewModel(this);
         }
-        public void Doctor(int id)
+
+        public void Doctor(int id) //view врача
         {
             Content = new DoctorViewModel(id, this);
         }
-        public void Patient(int id)
+
+        public void Patient(int id) //view пациента
         {
             Content = new PatientViewModel(id, this);
         }
-        public void Registration()
+
+        public void Registration() //view регистрации
         {
             Content = new RegistrationViewModel(this);
         }
-        public void Login()
+
+        public void Login() //view входа
         {
             Content = new LoginViewModel(this);
         }
-        public void ChangeTheme()
+
+        public void ChangeTheme() //изменение темы
         {
             var themeBootstrap = Application.Current.LocateMaterialTheme<MaterialThemeBase>();
             if (BaseThemeMode.Dark == themeBootstrap.CurrentTheme.GetBaseTheme())
@@ -82,6 +93,7 @@ namespace СlinicReception.ViewModels
                 themeBootstrap.CurrentTheme = theme;
             }
         }
+
         public MainWindowViewModel()
         {
             Content = new LoginViewModel(this);

@@ -122,13 +122,6 @@
 								</DataGrid.Columns>
 							</DataGrid>
 						</Grid>
-						<!--<ListBox Items="{Binding SearchResults}">
-							<ListBox.ItemsPanel>
-								<ItemsPanelTemplate>
-									<StackPanel />
-								</ItemsPanelTemplate>
-							</ListBox.ItemsPanel>
-						</ListBox>-->
 					</DockPanel>
 				</TabItem>
 			</TabControl>

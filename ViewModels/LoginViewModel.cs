@@ -11,39 +11,45 @@ namespace СlinicReception.ViewModels
 {
     public class LoginViewModel: ViewModelBase
     {
-        MainWindowViewModel mw; 
+        MainWindowViewModel mw; //для смены view
         public MainWindowViewModel MW
         {
             get => mw;
             private set => this.RaiseAndSetIfChanged(ref mw, value);
         }
-        bool show;
-        public bool Show
+
+        bool showMesWrongData; //для сообщения о неправильных данных
+        public bool ShowMesWrongData
         {
-            get => show;
-            private set => this.RaiseAndSetIfChanged(ref show, value);
+            get => showMesWrongData;
+            private set => this.RaiseAndSetIfChanged(ref showMesWrongData, value);
         }
-        string? login;
+
+        string? login; //логин
         public string? Login
         {
             get => login;
             private set => this.RaiseAndSetIfChanged(ref login, value);
         }
-        string? password;
+
+        string? password; //пароль
         public string? Password
         {
             get => password;
             private set => this.RaiseAndSetIfChanged(ref password, value);
         }
-        public void Registration()
+
+        public void Registration() //view регистрации
         {
             MW.Registration();
         }
-        public void Theme()
+
+        public void Theme() //изменить тему
         {
             MW.ChangeTheme();
         }
-        public void CheckLogin()
+
+        public void CheckLogin() //проверка данных и вызов соответсвующего view
         {
             using var db = new СlinicReceptionContext();
             if (db.Log_In.Any(x => x.Login == login && x.Password == Password))
@@ -55,12 +61,12 @@ namespace СlinicReception.ViewModels
                 if (db.Log_In.First(x => x.Login == Login).Role == "Врач") MW.Doctor((int)db.Log_In.First(x => x.Login == Login).ID);
                 if (db.Log_In.First(x => x.Login == Login).Role == "Пациент") MW.Patient((int)db.Log_In.First(x => x.Login == Login).ID);
             }
-            else Show = true;
-
+            else ShowMesWrongData = true;
         }
+
         public LoginViewModel(MainWindowViewModel mw)
         {
-            MW = mw; show = false;
+            MW = mw;
         }
     }
 }

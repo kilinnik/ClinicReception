@@ -355,7 +355,7 @@ namespace СlinicReception.ViewModels
         }
         public PatientViewModel(int id, MainWindowViewModel mw)
         {
-            MW = mw; ID = id; TextSpeciality = "Специальность врача"; OnButton = true; TextVisitDate = "Дата приёма"; Icon = "ToggleSwitchOffOutline"; EnabledHours = true; VisibleHours = true; Hours = 0; Minutes = 0; TextTime = "Время приёма"; OnButton = true;
+            MW = mw; ID = id; TextSpeciality = "Специальность врача"; OnButton = true; TextVisitDate = "Дата приёма"; Icon = "ToggleSwitchOffOutline"; EnabledHours = true; VisibleHours = true; Hours = 0; Minutes = 0; TextTime = "Время приёма";
             using var db = new СlinicReceptionContext();
             var listSpecialities = db.Врач.Where(x => x.Номер_участка == db.Пациент.First(y => y.Номер_карты == id).Номер_участка).Select(x => x.Специальность).Distinct();
             foreach (var item in listSpecialities)
@@ -400,11 +400,5 @@ namespace СlinicReception.ViewModels
                 if (s == "") ShowTimetable = false;
             }
         }
-        //public IEnumerable<TimetableDoctors> ListTimetable(string s)
-        //{
-        //    using var db = new СlinicReceptionContext();
-        //    var timetables = db.Where
-        //    return;
-        //}
     }
 }

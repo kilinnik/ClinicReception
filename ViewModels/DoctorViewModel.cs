@@ -3,6 +3,7 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -105,7 +106,7 @@ namespace СlinicReception.ViewModels
                 if (db.Обследование.Any(x => x.Номер_визита == visit.Номер_визита))
                 {
                     survey = "";
-                    var surveys = db.Обследование.Where(x => x.Номер_визита == visit.Номер_визита);
+                    var surveys = db.Обследование.Where(x => x.Номер_визита == visit.Номер_визита).OrderBy(y => y.Название_обследования).ToArray();
                     foreach (var s in surveys)
                     {
                         survey += s.Название_обследования + ",";
@@ -257,6 +258,20 @@ namespace СlinicReception.ViewModels
                 db.Обследование.Add(new Survey(db.Обследование.OrderBy(x => x.Номер_обследования).Last().Номер_обследования + 1, CurSurvey.Text, db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID).Номер_визита));
                 db.SaveChanges();
                 ShowSurvey = false;
+                var survey = "не назначено";
+                SurveyButtonText = "Назначить обследование";
+                var visit = db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID);
+                if (db.Обследование.Any(x => x.Номер_визита == visit.Номер_визита))
+                {
+                    survey = "";
+                    var surveys = db.Обследование.Where(x => x.Номер_визита == visit.Номер_визита).OrderBy(y => y.Название_обследования).ToArray();
+                    foreach (var s in surveys)
+                    {
+                        survey += s.Название_обследования + ",";
+                    }
+                    survey = survey.Substring(0, survey.Length - 1);
+                }
+                Survey = survey;
             }
         }
         public void SickLeaveButton()
@@ -268,8 +283,12 @@ namespace СlinicReception.ViewModels
             }
             else
             {
+                SickLeaveButtonText = "Создать больничный лист";
+                VisibleSickLeaveButton = false;
                 using var db = new СlinicReceptionContext();
                 var dateTime = DateTime.Parse(VisitDate.Text);
+                var visit = db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID);
+                SickLeave = db.Больничный_лист.First(x => x.Номер_визита == visit.Номер_визита).Статус;
                 db.Больничный_лист.Add(new SickLeave(db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID).Номер_визита, DateTime.Parse(SickLeaveDateOpen), DateTime.Parse(SickLeaveDateClose), "открыт"));
                 db.SaveChanges();
                 ShowSickLeave = false;

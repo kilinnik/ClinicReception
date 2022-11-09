@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,15 @@ namespace СlinicReception.ViewModels
 {
     public class DbAdminViewModel : ViewModelBase
     {
+        MainWindowViewModel mw;
+        public MainWindowViewModel MW
+        {
+            get => mw;
+            private set => this.RaiseAndSetIfChanged(ref mw, value);
+        }
+        public DbAdminViewModel(MainWindowViewModel mw)
+        {
+            MW = mw;
+        }
     }
 }

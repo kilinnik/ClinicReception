@@ -23,19 +23,19 @@
 				<controls:Card>
 					<TextBlock FontSize="20" HorizontalAlignment="Center" Classes="Headline6" Text="Регистрация" />
 				</controls:Card>
-				<TextBox UseFloatingWatermark="{Binding Show}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding TextSurname}"/>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding TextName}"/>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding TextPatronymic}"/>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding TextPhone}"/>
-				<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}" />			
+				<TextBox UseFloatingWatermark="{Binding Show}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding LabelSurname}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding LabelName}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding LabelPatronymic}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding LabelPhone}"/>
+				<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding LabelDateOfBirth}" />			
 				<WrapPanel>
 					<TextBlock VerticalAlignment="Center" FontSize="18" Width="60">Адрес:</TextBlock>
-					<ComboBox Classes="Outline" SelectedItem="{Binding Street}" SelectedIndex="{Binding Index}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding TextAdress}"/>
+					<ComboBox Classes="Outline" SelectedItem="{Binding SelectedStreet}" SelectedIndex="{Binding IndexCurStreet}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding LabelAdress}"/>
 					<TextBox Width="75" Text="{Binding House}" Watermark="Дом" />
 					<TextBox Width="75" Text="{Binding Flat}" Watermark="Квартира"/>
 				</WrapPanel>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Login}" Watermark="Логин" p1:TextFieldAssist.Label="{Binding TextLogin}"/>
-				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Password}" Classes="outline dense revealPasswordButton" PasswordChar="*" Watermark="Пароль" p1:TextFieldAssist.Label="{Binding TextPassword}"/>			
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Login}" Watermark="Логин" p1:TextFieldAssist.Label="{Binding LabelLogin}"/>
+				<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Password}" Classes="outline dense revealPasswordButton" PasswordChar="*" Watermark="Пароль" p1:TextFieldAssist.Label="{Binding LabelPassword}"/>			
 				<Button Command="{Binding Registration}">Зарегестрироваться</Button>
 			</StackPanel>
 		</Panel>

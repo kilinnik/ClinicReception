@@ -17,84 +17,91 @@ namespace СlinicReception.ViewModels
 {
     public class RegistrationViewModel: ViewModelBase
     {
+        //список улиц по участкам
         static List<List<string>> ListOfArea = new List<List<string>>() { new List<string> {"ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> {"ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> {"ул. Филатова", "Школьная ул." } };
-        int? index;
-        public int? Index
+       
+        int? indexCurStreet; //индекс текущей улицы
+        public int? IndexCurStreet 
         {
-            get => index;
-            set => this.RaiseAndSetIfChanged(ref index, value);
+            get => indexCurStreet;
+            set => this.RaiseAndSetIfChanged(ref indexCurStreet, value);
         }
-        TextBlock? street;
-        public TextBlock? Street
+
+        ObservableCollection<TextBlock> streets = new ObservableCollection<TextBlock>(); //список улиц
+        public ObservableCollection<TextBlock> Streets
         {
-            get => street;
-            set => this.RaiseAndSetIfChanged(ref street, value);
+            get => streets;
+            set => this.RaiseAndSetIfChanged(ref streets, value);
         }
-        int? house;
+
+        TextBlock? selectedStreet; //выбраная улица
+        public TextBlock? SelectedStreet
+        {
+            get => selectedStreet;
+            set => this.RaiseAndSetIfChanged(ref selectedStreet, value);
+        }
+
+        int? house; //№ дома
         public int? House
         {
             get => house;
             set => this.RaiseAndSetIfChanged(ref house, value);
         }
-        int? flat;
+
+        int? flat; //№ квартиры
         public int? Flat
         {
             get => flat;
             set => this.RaiseAndSetIfChanged(ref flat, value);
         }
-        ObservableCollection<TextBlock> streets = new ObservableCollection<TextBlock>();
-        public ObservableCollection<TextBlock> Streets
-        { 
-            get =>  streets;
-            set => this.RaiseAndSetIfChanged(ref streets, value);
-        }
-        string? textSurname;
-        public string? TextSurname
+
+        string? labelSurname;
+        public string? LabelSurname
         {
-            get => textSurname;
-            set => this.RaiseAndSetIfChanged(ref textSurname, value);
+            get => labelSurname;
+            set => this.RaiseAndSetIfChanged(ref labelSurname, value);
         }
-        string? textName;
-        public string? TextName
+        string? labelName;
+        public string? LabelName
         {
-            get => textName;
-            set => this.RaiseAndSetIfChanged(ref textName, value);
+            get => labelName;
+            set => this.RaiseAndSetIfChanged(ref labelName, value);
         }
-        string? textPatronymic;
-        public string? TextPatronymic
+        string? labelPatronymic;
+        public string? LabelPatronymic
         {
-            get => textPatronymic;
-            set => this.RaiseAndSetIfChanged(ref textPatronymic, value);
+            get => labelPatronymic;
+            set => this.RaiseAndSetIfChanged(ref labelPatronymic, value);
         }
-        string? textPhone;
-        public string? TextPhone
+        string? labelPhone;
+        public string? LabelPhone
         {
-            get => textPhone;
-            set => this.RaiseAndSetIfChanged(ref textPhone, value);
+            get => labelPhone;
+            set => this.RaiseAndSetIfChanged(ref labelPhone, value);
         }
-        string? textDateOfBirthday;
-        public string? TextDateOfBirthday
+        string? labelDateOfBirth;
+        public string? LabelDateOfBirth
         {
-            get => textDateOfBirthday;
-            set => this.RaiseAndSetIfChanged(ref textDateOfBirthday, value);
+            get => labelDateOfBirth;
+            set => this.RaiseAndSetIfChanged(ref labelDateOfBirth, value);
         }
-        string? textAdress;
-        public string? TextAdress
+        string? labelAdress;
+        public string? LabelAdress
         {
-            get => textAdress;
-            set => this.RaiseAndSetIfChanged(ref textAdress, value);
+            get => labelAdress;
+            set => this.RaiseAndSetIfChanged(ref labelAdress, value);
         }
-        string? textLogin;
-        public string? TextLogin
+        string? labelLogin;
+        public string? LabelLogin
         {
-            get => textLogin; 
-            set => this.RaiseAndSetIfChanged(ref textLogin, value);
+            get => labelLogin; 
+            set => this.RaiseAndSetIfChanged(ref labelLogin, value);
         }
-        string? textPassword;
-        public string? TextPassword
+        string? labelPassword;
+        public string? LabelPassword
         {
-            get => textPassword;
-            set => this.RaiseAndSetIfChanged(ref textPassword, value);
+            get => labelPassword;
+            set => this.RaiseAndSetIfChanged(ref labelPassword, value);
         }
         string? surname;
         public string? Surname
@@ -161,28 +168,28 @@ namespace СlinicReception.ViewModels
         public void Registration()
         {
             using var db = new СlinicReceptionContext();
-            TextSurname = null; TextName = null; TextPatronymic = null; TextPhone = null; TextDateOfBirthday = null; TextAdress = null; TextLogin = null; TextPassword = null;
-            if (Surname == null) TextSurname = "Введите фамилию";
-            else if (!Surname.All(Char.IsLetter)) TextSurname = "Фамилия содержит недопустимые символы";
-            if (Name == null) TextName = "Введите имя";
-            else if (!Name.All(Char.IsLetter)) TextName = "Имя содержит недопустимые символы";
-            if (Patronymic == null) TextPatronymic = "Введите отчество";
-            else if (!Patronymic.All(Char.IsLetter)) TextPatronymic = "Отчество содержит недопустимые символы";
-            if (Phone == null) TextPhone = "Введите номер телефона";
-            else if (Phone.ToString()?.Length != 10) TextPhone = "Неверный формат номера телефона";
-            if (DateOfBirthday == null) TextDateOfBirthday = "Выберете дату рождения";
-            else if (Convert.ToDateTime(DateOfBirthday) > DateTime.Today) TextDateOfBirthday = "Некорректная дата рождения";
-            if (Street == null || House == null) TextAdress = "Введите адрес";
-            if (Login == null) TextLogin = "Введите логин";
-            else if (db.Log_In.Any(x => x.Login == Login)) TextLogin = "Такой логин уже существует";
-            if (Password == null) TextPassword = "Введите пароль";
-            if (TextSurname == null && TextName == null && TextPatronymic == null && TextPhone == null && TextDateOfBirthday == null && TextAdress == null && TextLogin == null && TextPassword == null)
+            LabelSurname = null; LabelName = null; LabelPatronymic = null; LabelPhone = null; LabelDateOfBirth = null; LabelAdress = null; LabelLogin = null; LabelPassword = null;
+            if (Surname == null) LabelSurname = "Введите фамилию";
+            else if (!Surname.All(Char.IsLetter)) LabelSurname = "Фамилия содержит недопустимые символы";
+            if (Name == null) LabelName = "Введите имя";
+            else if (!Name.All(Char.IsLetter)) LabelName = "Имя содержит недопустимые символы";
+            if (Patronymic == null) LabelPatronymic = "Введите отчество";
+            else if (!Patronymic.All(Char.IsLetter)) LabelPatronymic = "Отчество содержит недопустимые символы";
+            if (Phone == null) LabelPhone = "Введите номер телефона";
+            else if (Phone.ToString()?.Length != 10) LabelPhone = "Неверный формат номера телефона";
+            if (DateOfBirthday == null) LabelDateOfBirth = "Выберете дату рождения";
+            else if (Convert.ToDateTime(DateOfBirthday) > DateTime.Today) LabelDateOfBirth = "Некорректная дата рождения";
+            if (SelectedStreet == null || House == null) LabelAdress = "Введите адрес";
+            if (Login == null) LabelLogin = "Введите логин";
+            else if (db.Log_In.Any(x => x.Login == Login)) LabelLogin = "Такой логин уже существует";
+            if (Password == null) LabelPassword = "Введите пароль";
+            if (LabelSurname == null && LabelName == null && LabelPatronymic == null && LabelPhone == null && LabelDateOfBirth == null && LabelAdress == null && LabelLogin == null && LabelPassword == null)
             {
                 //List<string> months = new List<string>() { "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря" };
-                int area = Index < ListOfArea[0].Count ? 1 : Index < (ListOfArea[0].Count + ListOfArea[1].Count) ? 2 : 3;
+                int area = IndexCurStreet < ListOfArea[0].Count ? 1 : IndexCurStreet < (ListOfArea[0].Count + ListOfArea[1].Count) ? 2 : 3;
                 string adress;
-                if (Flat == null) adress = $"{Street}, д. {House}";
-                else adress = $"{Street}, д. {House}, кв. {Flat}";
+                if (Flat == null) adress = $"{SelectedStreet}, д. {House}";
+                else adress = $"{SelectedStreet}, д. {House}, кв. {Flat}";
                 db.Add(new Patient(db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты + 1, Surname, Name, Patronymic, (long)Phone, Convert.ToDateTime(DateOfBirthday), area, adress));
                 db.Add(new DataLogin(Login, Password, "Пациент", db.Пациент.OrderBy(x => x.Номер_карты).Last().Номер_карты + 1));
                 db.SaveChanges();
@@ -192,9 +199,7 @@ namespace СlinicReception.ViewModels
         }
         public RegistrationViewModel(MainWindowViewModel mw)
         {
-            //DateOfBirthday = "Введите дату рождения";
-            TextDateOfBirthday = "Дата рождения";
-            MW = mw; Show = false; TextAdress = "Улица";
+            LabelDateOfBirth = "Дата рождения"; MW = mw; LabelAdress = "Улица";
             for (int i = 0; i < ListOfArea.Count; i++)
             {
                 for (int j = 0; j < ListOfArea[i].Count; j++)

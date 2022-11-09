@@ -14,7 +14,7 @@
 			<material:MaterialIcon Kind="ThemeLightDark"></material:MaterialIcon>
 		</Button>
 		<StackPanel Width="300" MaxWidth="300" Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
-			<TextBlock HorizontalAlignment="Center" IsVisible="{Binding Show}" Foreground="Red" Text="Неправильный логин или пароль"/>
+			<TextBlock HorizontalAlignment="Center" IsVisible="{Binding ShowMesWrongData}" Foreground="Red" Text="Неправильный логин или пароль"/>
 			<controls:Card>
 					<TextBlock FontSize="20" HorizontalAlignment="Center" Classes="Headline6" Text="Авторизация" />
 			</controls:Card>

@@ -10,7 +10,7 @@
              x:Class="СlinicReception.Views.HeadDoctorView">
 	<Panel>
 		<StackPanel Orientation="Horizontal">
-			<TabControl SelectedIndex="1" Margin="5" TabStripPlacement="Left">
+			<TabControl SelectedIndex="0" Margin="5" TabStripPlacement="Left">
 				<!--Запись на приём-->
 				<TabItem>
 					<TabItem.Header>
