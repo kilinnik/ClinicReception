@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
 		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
-        Width="{Binding Width}" Height="{Binding Height}"
+        Width="1100" Height="700"
         x:Class="СlinicReception.Views.MainWindow"
         Icon="/Assets/clinic-logo.ico"
         Title="Регистратура поликлиники"

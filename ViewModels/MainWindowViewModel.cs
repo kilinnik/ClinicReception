@@ -8,22 +8,8 @@ using Material.Colors;
 
 namespace СlinicReception.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel: ViewModelBase
     {
-        int width; //ширина окна
-        public int Width
-        {
-            get => width;
-            private set => this.RaiseAndSetIfChanged(ref width, value);
-        }
-
-        int height;//высота окна
-        public int Height
-        {
-            get => height;
-            private set => this.RaiseAndSetIfChanged(ref height, value);
-        }
-
         ViewModelBase content;//текущее содержимое окна
         public ViewModelBase Content
         {
@@ -71,33 +57,9 @@ namespace СlinicReception.ViewModels
             Content = new LoginViewModel(this);
         }
 
-        public void ChangeTheme() //изменение темы
-        {
-            var themeBootstrap = Application.Current.LocateMaterialTheme<MaterialThemeBase>();
-            if (BaseThemeMode.Dark == themeBootstrap.CurrentTheme.GetBaseTheme())
-            {
-                var primary = PrimaryColor.Purple;
-                var primaryColor = SwatchHelper.Lookup[(MaterialColor)primary];
-                var secondary = SecondaryColor.Lime;
-                var secondaryColor = SwatchHelper.Lookup[(MaterialColor)secondary];
-                var theme = Theme.Create(Theme.Light, primaryColor, secondaryColor);
-                themeBootstrap.CurrentTheme = theme;
-            }
-            else
-            {
-                var primary = PrimaryColor.Purple;
-                var primaryColor = SwatchHelper.Lookup[(MaterialColor)primary];
-                var secondary = SecondaryColor.Lime;
-                var secondaryColor = SwatchHelper.Lookup[(MaterialColor)secondary];
-                var theme = Theme.Create(Theme.Dark, primaryColor, secondaryColor);
-                themeBootstrap.CurrentTheme = theme;
-            }
-        }
-
         public MainWindowViewModel()
         {
             Content = new LoginViewModel(this);
-            Width = 1100; Height = 700;
         }
     }
 }

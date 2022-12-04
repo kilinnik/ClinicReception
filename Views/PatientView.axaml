@@ -19,11 +19,11 @@
 					<WrapPanel>
 						<StackPanel Margin="5">
 							<WrapPanel>
-								<ComboBox Classes="Outline" Width="260" SelectedItem="{Binding Speciality, Mode=TwoWay}" Items="{Binding Specialities}" p1:ComboBoxAssist.Label="{Binding TextSpeciality}"/>
+								<ComboBox Classes="Outline" Width="260" SelectedItem="{Binding SelectedSpeciality}" Items="{Binding Specialities}" p1:ComboBoxAssist.Label="{Binding LabelSpeciality}"/>
 								<TextBlock Height="20" FontSize="18" TextAlignment="Center" Foreground="Red" Text="{Binding WrongSpecialities}"/>
 							</WrapPanel>
 							<WrapPanel>
-								<DatePicker VerticalAlignment="Top" Width="260" Height="80" SelectedDate="{Binding VisitDate}" p1:TextFieldAssist.Label="{Binding TextVisitDate}" />
+								<DatePicker VerticalAlignment="Top" Width="260" Height="80" SelectedDate="{Binding VisitDate}" p1:TextFieldAssist.Label="{Binding LabelVisitDate}" />
 								<TextBlock Height="20" FontSize="18" TextAlignment="Center" Foreground="Red" Text="{Binding WrongDate}"/>
 							</WrapPanel>
 							<WrapPanel>
@@ -47,13 +47,13 @@
 								</Panel>
 							</controls:Card>
 							<Button IsEnabled="{Binding OnButton}" HorizontalAlignment="Left" Width="260" Command="{Binding Appointment}">Записаться</Button>
-							<controls:Card Width="260" HorizontalAlignment="Left" IsVisible="{Binding ShowCard}">
+							<controls:Card Width="260" HorizontalAlignment="Left" IsVisible="{Binding VisibleCard}">
 								<StackPanel>
 									<TextBlock IsVisible="{Binding TextAppointmentVisible}" TextWrapping="Wrap" FontSize="15" Width="240" HorizontalAlignment="Center" Classes="Headline6" Text="{Binding TextAppointment}" />
 									<WrapPanel HorizontalAlignment="Center" IsVisible="{Binding ChooseVisible}">
-										<Button Classes="Flat" Background="Blue" Width="60" Command="{Binding Accept}">Да</Button>
+										<Button Background="Blue" Width="60" Command="{Binding Accept}">Да</Button>
 										<Border Width="2"></Border>
-										<Button Classes="Flat" Background="LimeGreen" Width="170" Command="{Binding ChangeData}">Изменить данные</Button>
+										<Button Background="LimeGreen" Width="170" Command="{Binding ChangeData}">Изменить данные</Button>
 									</WrapPanel>
 								</StackPanel>
 							</controls:Card>
@@ -68,15 +68,15 @@
 					<Panel>
 						<WrapPanel>
 							<StackPanel Width="300" Margin="5">
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Фамилия" Text="{Binding Surname}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Имя" Text="{Binding Name}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Отчество" Text="{Binding Patronymic}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Номер телефона" Text="{Binding Phone}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Дата рождения" Text="{Binding DateOfBirthday}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Адрес" Text="{Binding Adress}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Логин" Text="{Binding Login}" />
-								<TextBox IsEnabled="{Binding ShowUserData}" UseFloatingWatermark="True" Classes="filled revealPasswordButton" PasswordChar="*" p1:TextFieldAssist.Label="Пароль" Text="{Binding Password}" />
-								<controls:FloatingButton Command="{Binding ChangeUserData}" Width="150" HorizontalContentAlignment="Center" Margin="5" Classes="Accent" VerticalContentAlignment="Center" Content="{Binding TextChangeUserData}" IsExtended="True"/>
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Фамилия" Text="{Binding Surname}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Имя" Text="{Binding Name}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Отчество" Text="{Binding Patronymic}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Номер телефона" Text="{Binding Phone}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Дата рождения" Text="{Binding DateOfBirthday}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Адрес" Text="{Binding Adress}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled" p1:TextFieldAssist.Label="Логин" Text="{Binding Login}" />
+								<TextBox IsEnabled="{Binding EnabledUserData}" UseFloatingWatermark="True" Classes="filled revealPasswordButton" PasswordChar="*" p1:TextFieldAssist.Label="Пароль" Text="{Binding Password}" />
+								<controls:FloatingButton Command="{Binding ButtonChangeUserData}" Width="150" HorizontalContentAlignment="Center" Margin="5" Classes="Accent" VerticalContentAlignment="Center" Content="{Binding TextButtonChangeUserData}" IsExtended="True"/>
 							</StackPanel>
 							<StackPanel Margin="5">
 								<controls:Card HorizontalAlignment="Center" IsVisible="{Binding}">

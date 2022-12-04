@@ -9,9 +9,108 @@
              x:Class="СlinicReception.Views.DataAdminView">
 	<Panel>
 		<StackPanel>
-			<TabControl>
-				
+			<TabControl SelectedIndex="0">
+				<!--Расписание-->
+				<TabItem Width="150" Header="Расписание врачей">
+					<WrapPanel>
+						<StackPanel Margin="5">
+							<DataGrid Height="640" Items="{Binding Timetables}">
+								<DataGrid.Columns>
+									<DataGridTextColumn IsReadOnly="True" Header="Табельный номер" Binding="{Binding Табельный_номер}"/>
+									<DataGridTextColumn Header="Дни приёма" Binding="{Binding Дни_приёма}"/>
+									<DataGridTextColumn Header="Часы приёма" Binding="{Binding Часы_приёма}"/>
+									<DataGridTextColumn Header="Номер кабинета" Binding="{Binding Номер_кабинета}"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</StackPanel>
+						<StackPanel>
+							<controls:Card Height="50" Margin="5">
+								<Button Command="{Binding UpdateTimetables}" Background="Blue">Обновить данные в БД</Button>
+							</controls:Card>
+							<WrapPanel>
+								<TextBox Margin="5" Width="180" UseFloatingWatermark="True" Text="{Binding DoctorId}" p1:TextFieldAssist.Label="Табельный номер"/>
+								<controls:Card Width="240" Height="50" Margin="5">
+									<Button Command="{Binding DeleteTimetable}" Classes="Accent">Удалить расписание</Button>
+								</controls:Card>
+							</WrapPanel>
+							<WrapPanel Margin="5">
+								<StackPanel Margin="5">
+									<ComboBox HorizontalAlignment="Left" Classes="Outline" Width="180" SelectedItem="{Binding SelectedDoctorId}" Items="{Binding DoctorIds}" p1:ComboBoxAssist.Label="Табельный номер"/>
+									<TextBox Classes="outline" UseFloatingWatermark="True" Text="{Binding NumberOffice}" p1:TextFieldAssist.Label="Номер кабинета"/>
+								</StackPanel>
+								<StackPanel Margin="5">
+									<TextBox Classes="outline" Height="60" Width="130" UseFloatingWatermark="True" Text="{Binding Days}" p1:TextFieldAssist.Label="Дни приёма"/>
+									<TextBox Classes="outline" UseFloatingWatermark="True" Text="{Binding Hours}" p1:TextFieldAssist.Label="Часы приёма"/>
+								</StackPanel>
+							</WrapPanel>
+							<controls:Card Height="50" Margin="5">
+								<Button Command="{Binding AddTimetable}" Background="Green">Добавить расписание</Button>
+							</controls:Card>
+						</StackPanel>
+					</WrapPanel>
+				</TabItem>
+				<!--Больничные листы-->
+				<TabItem Header="Больничные листы">
+					<WrapPanel>
+						<DataGrid Height="640" IsReadOnly="True" Items="{Binding SickLeaves}">
+							<DataGrid.Columns>
+								<DataGridTextColumn  Header="Номер визита" Binding="{Binding Номер_визита}"/>
+								<DataGridTextColumn Header="Открыт" Binding="{Binding Открыт, StringFormat = {}{0:dd/MM/yyyy}}"/>
+								<DataGridTextColumn Header="Закрыт" Binding="{Binding Закрыт, StringFormat = {}{0:dd/MM/yyyy}}"/>
+								<DataGridTextColumn Header="Статус" Binding="{Binding Статус}"/>
+							</DataGrid.Columns>
+						</DataGrid>
+						<StackPanel>
+							<controls:Card Height="50" Margin="5">
+								<Button Command="{Binding UpdateStatuses}" Background="Blue">Обновить статусы больничных листов</Button>
+							</controls:Card>
+						</StackPanel>
+					</WrapPanel>
+				</TabItem>
+				<!--Приёмы-->
+				<TabItem Header="Приёмы">
+					<WrapPanel>
+						<DataGrid Height="640" IsReadOnly="True" Items="{Binding Visits}">
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="Номер визита" Binding="{Binding Номер_визита}"/>
+								<DataGridTextColumn Header="Табельный номер" Binding="{Binding Табельный_номер}"/>
+								<DataGridTextColumn Header="Номер карты" Binding="{Binding Номер_карты}"/>
+								<DataGridTextColumn Header="Дата приёма" Binding="{Binding Дата_приёма}"/>
+							</DataGrid.Columns>
+						</DataGrid>
+						<StackPanel>
+							<TextBox Margin="5" Watermark="Введите номер визита" Text="{Binding NumberVisit}"/>
+							<controls:Card Height="50" Margin="5">
+								<Button Command="{Binding DeleteVisit}" Classes="Accent">Удалить приём</Button>
+							</controls:Card>
+						</StackPanel>
+					</WrapPanel>
+				</TabItem>
+				<!--Пациенты-->
+				<TabItem Header="Пациенты">
+					<WrapPanel>
+						<DataGrid Height="640" IsReadOnly="True" Items="{Binding Patients}">
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="Номер карты" Binding="{Binding Номер_карты}"/>
+								<DataGridTextColumn Header="Фамилия" Binding="{Binding Фамилия}"/>
+								<DataGridTextColumn Header="Имя" Binding="{Binding Имя}"/>
+								<DataGridTextColumn Header="Отчество" Binding="{Binding Отчество}"/>
+								<DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
+								<DataGridTextColumn Header="Дата рождения" Binding="{Binding Дата_рождения, StringFormat = {}{0:dd/MM/yyyy}}"/>
+							</DataGrid.Columns>
+						</DataGrid>
+						<StackPanel>
+							<TextBox Margin="5" Watermark="Введите номер карты" Text="{Binding NumberCard}"/>
+							<controls:Card Height="50" Margin="5">
+								<Button Command="{Binding DeletePatient}" Background="Green">Удалить пациента</Button>
+							</controls:Card>
+						</StackPanel>
+					</WrapPanel>
+				</TabItem>
 			</TabControl>
 		</StackPanel>
+		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Height="30">
+			<material:MaterialIcon Kind="Login" />
+		</Button>
 	</Panel>
 </UserControl>

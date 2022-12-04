@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="СlinicReception.ViewModels.MainWindowViewModel">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="LoginViewModel" Type="СlinicReception.ViewModels.LoginViewModel">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.047" Y="0.06" Height="0.182" Width="1.288" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACIAAAAgAAAAAAAAAAAAACAAAACAQAAAAQAAAECAU=</HashCode>
+      <FileName>ViewModels\MainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoginViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="СlinicReception.ViewModels.RegistrationViewModel">
+    <Position X="3.25" Y="6.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>MQUhACABAAQACQAUAAgEEARgBFAUIBAiBBoQIgAHEQA=</HashCode>
+      <FileName>ViewModels\RegistrationViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PatientViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="СlinicReception.ViewModels.LoginViewModel">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="HeadDoctorViewModel" Type="СlinicReception.ViewModels.HeadDoctorViewModel" ManuallyRouted="true">
+      <Path>
+        <Point X="4" Y="3.25" />
+        <Point X="4" Y="2.639" />
+        <Point X="9.25" Y="2.639" />
+        <Point X="9.25" Y="3.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="DoctorViewModel" Type="СlinicReception.ViewModels.DoctorViewModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.125" Y="3.25" />
+        <Point X="4.125" Y="2.625" />
+        <Point X="11.25" Y="2.625" />
+        <Point X="11.25" Y="3" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="RegistrarViewModel" Type="СlinicReception.ViewModels.RegistrarViewModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.562" Y="3.25" />
+        <Point X="3.562" Y="2.625" />
+        <Point X="13.312" Y="2.625" />
+        <Point X="13.312" Y="3" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAARAAAAAAAAAAAEAAAABQAAAgECBBAQAhAEEAA=</HashCode>
+      <FileName>ViewModels\LoginViewModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PatientViewModel" />
+      <Property Name="HeadDoctorViewModel" />
+      <Property Name="DoctorViewModel" />
+      <Property Name="RegistrarViewModel" />
+      <Property Name="RegistrationViewModel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="СlinicReception.ViewModels.PatientViewModel">
+    <Position X="6" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>YYCAUHEQAEDQ0IJAwAAGM4YARFqEQACuAQBQ70MIkGE=</HashCode>
+      <FileName>ViewModels\PatientViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="СlinicReception.ViewModels.DoctorViewModel">
+    <Position X="10.5" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAAQhRAIEAAAgwACAAMAAAoOAExORoAcQkGAE2AIIAc=</HashCode>
+      <FileName>ViewModels\DoctorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="СlinicReception.ViewModels.HeadDoctorViewModel">
+    <Position X="8.5" Y="3.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>IAIAACgAAAAIAABCAAAEIgYDBOgEAACoAABQYAICEEA=</HashCode>
+      <FileName>ViewModels\HeadDoctorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="СlinicReception.ViewModels.RegistrarViewModel">
+    <Position X="12.5" Y="3" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>MYWlUHMQAETQmIBUwAgEsIZgRNCUIBDqBApQ6CMHhWA=</HashCode>
+      <FileName>ViewModels\RegistrarViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

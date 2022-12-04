@@ -13,18 +13,18 @@
 		</Style>
 	</UserControl.Styles>
 	<Panel>
-		<TabControl SelectedIndex="0" Margin="5">
+		<TabControl SelectedIndex="2" Margin="5">
 			<!--Добавить пациента-->
 			<TabItem Header="Добавить пациента">
 				<StackPanel HorizontalAlignment="Left" Width="450">
-					<TextBox UseFloatingWatermark="{Binding Show}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding TextSurname}"/>
-					<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding TextName}"/>
-					<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding TextPatronymic}"/>
-					<TextBox UseFloatingWatermark="{Binding Show}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding TextPhone}"/>
-					<DatePicker SelectedDate="{Binding DateOfBirthday}" p1:TextFieldAssist.Label="{Binding TextDateOfBirthday}" />
+					<TextBox UseFloatingWatermark="{Binding ShowFloatingWatermark}" Watermark="Фамилия" Text="{Binding Surname}" p1:TextFieldAssist.Label="{Binding LabelSurname}"/>
+					<TextBox UseFloatingWatermark="{Binding ShowFloatingWatermark}" Text="{Binding Name}" Watermark="Имя" p1:TextFieldAssist.Label="{Binding LabelName}"/>
+					<TextBox UseFloatingWatermark="{Binding ShowFloatingWatermark}" Text="{Binding Patronymic}" Watermark="Отчество" p1:TextFieldAssist.Label="{Binding LabelPatronymic}"/>
+					<TextBox UseFloatingWatermark="{Binding ShowFloatingWatermark}" Text="{Binding Phone}" Watermark="Телефон" p1:TextFieldAssist.Label="{Binding LabelPhone}"/>
+					<DatePicker SelectedDate="{Binding DateOfBirth}" p1:TextFieldAssist.Label="{Binding LabelDateOfBirth}" />
 					<WrapPanel>
 						<TextBlock VerticalAlignment="Center" FontSize="18" Width="60">Адрес:</TextBlock>
-						<ComboBox Classes="Outline" SelectedItem="{Binding Street}" SelectedIndex="{Binding Index}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding TextAdress}"/>
+						<ComboBox Classes="Outline" SelectedItem="{Binding SelectedStreet}" SelectedIndex="{Binding IndexCurStreet}" Items="{Binding Streets}" Width="240" p1:ComboBoxAssist.Label="{Binding TextAdress}"/>
 						<TextBox TextAlignment="Center" Width="75" Text="{Binding House}" Watermark="Дом" />
 						<TextBox TextAlignment="Center" Width="75" Text="{Binding Flat}" Watermark="Квартира"/>
 					</WrapPanel>
@@ -40,47 +40,47 @@
 					<TextBlock>Запись на приём</TextBlock>
 				</TabItem.Header>
 				<WrapPanel>
-				<StackPanel Margin="5">
-					<TextBox Width="240" HorizontalAlignment="Left" Text="{Binding SearchPatientForAddVisit}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Поиск пациента" CornerRadius="32" Margin="8">
-						<TextBox.InnerLeftContent>
-							<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
-								<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
-							</Border>
-						</TextBox.InnerLeftContent>
-					</TextBox>
-					<StackPanel IsEnabled="{Binding EnabledAddVisit}">
-						<ComboBox HorizontalAlignment="Left" Classes="Outline" Width="260" SelectedItem="{Binding Speciality, Mode=TwoWay}" Items="{Binding Specialities}" p1:ComboBoxAssist.Label="{Binding TextSpeciality}"/>
-						<DatePicker VerticalAlignment="Top" Width="260" Height="80" SelectedDate="{Binding VisitDate}" p1:TextFieldAssist.Label="{Binding TextVisitDate}" />
-						<WrapPanel>
-							<TextBlock Width="140" FontSize="18" VerticalAlignment="Center" Classes="Headline6" Text="{Binding TextTime}" />
-							<Panel>
-								<TextBlock Width="20" FontSize="18" IsEnabled="{Binding EnabledHours}" IsVisible="{Binding VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours1.Value}"></TextBlock>
-								<TextBlock Width="20" FontSize="18" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours2.Value}"></TextBlock>
-							</Panel>
-							<TextBlock FontSize="18" TextAlignment="Center" VerticalAlignment="Center" Classes="Headline6" Text=":"></TextBlock>
-							<TextBlock Width="57" FontSize="18" TextAlignment="Left" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Minutes.Value}"></TextBlock>				
-							<ToggleSwitch ToolTip.Tip="Переключить часы" Command="{Binding Switch}" IsChecked="True" Classes="Accent" />
-						</WrapPanel>
-						<controls:Card HorizontalAlignment="Left" Width="260">
-							<Panel>
-								<controls:CircleClockPicker Name="Minutes" Height="240" Width="240" Maximum="59" Minimum="0" StepFrequency="5" Value="{Binding Minutes, Mode=TwoWay}"/>
-								<controls:CircleClockPicker Name="Hours1" IsEnabled="{Binding EnabledHours}" IsVisible="{Binding VisibleHours}" Width="160" Height="160" Maximum="11" Minimum="0" StepFrequency="1" Value="{Binding Hours, Mode=TwoWay}"/>
-								<controls:CircleClockPicker Name="Hours2" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" Width="160" Height="160" Maximum="23" Minimum="12" StepFrequency="1" Value="{Binding Hours, Mode=TwoWay}"/>
-							</Panel>
-						</controls:Card>
-						<Button IsEnabled="{Binding OnButton}" HorizontalAlignment="Left" Width="260" Command="{Binding Appointment}">Записаться</Button>
-						<controls:Card Width="260" HorizontalAlignment="Left" IsVisible="{Binding ShowCard}">
-							<StackPanel>
-								<TextBlock IsVisible="{Binding TextAppointmentVisible}" TextWrapping="Wrap" FontSize="15" Width="240" HorizontalAlignment="Center" Classes="Headline6" Text="{Binding TextAppointment}" />
-								<WrapPanel HorizontalAlignment="Center" IsVisible="{Binding ChooseVisible}">
-									<Button Classes="Flat" Background="Blue" Width="60" Command="{Binding Accept}">Да</Button>
-									<Border Width="2"></Border>
-									<Button Classes="Flat" Background="LimeGreen" Width="170" Command="{Binding ChangeData}">Изменить данные</Button>
-								</WrapPanel>
-							</StackPanel>
-						</controls:Card>
+					<StackPanel Margin="5">
+						<TextBox Width="240" HorizontalAlignment="Left" Text="{Binding SearchPatientForAddVisit}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Поиск пациента" CornerRadius="32" Margin="8">
+							<TextBox.InnerLeftContent>
+								<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
+									<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
+								</Border>
+							</TextBox.InnerLeftContent>
+						</TextBox>
+						<StackPanel IsEnabled="{Binding EnabledAddVisit}">
+							<ComboBox HorizontalAlignment="Left" Classes="Outline" Width="260" SelectedItem="{Binding SelectedSpeciality}" Items="{Binding Specialities}" p1:ComboBoxAssist.Label="{Binding LabelSpeciality}"/>
+							<DatePicker VerticalAlignment="Top" Width="260" Height="80" SelectedDate="{Binding VisitDate}" p1:TextFieldAssist.Label="{Binding LabelVisitDate}" />
+							<WrapPanel>
+								<TextBlock Width="140" FontSize="18" VerticalAlignment="Center" Classes="Headline6" Text="{Binding TextTime}" />
+								<Panel>
+									<TextBlock Width="20" FontSize="18" IsEnabled="{Binding EnabledHours}" IsVisible="{Binding VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours1.Value}"></TextBlock>
+									<TextBlock Width="20" FontSize="18" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours2.Value}"></TextBlock>
+								</Panel>
+								<TextBlock FontSize="18" TextAlignment="Center" VerticalAlignment="Center" Classes="Headline6" Text=":"></TextBlock>
+								<TextBlock Width="57" FontSize="18" TextAlignment="Left" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Minutes.Value}"></TextBlock>
+								<ToggleSwitch ToolTip.Tip="Переключить часы" Command="{Binding Switch}" IsChecked="True" Classes="Accent" />
+							</WrapPanel>
+							<controls:Card HorizontalAlignment="Left" Width="260">
+								<Panel>
+									<controls:CircleClockPicker Name="Minutes" Height="240" Width="240" Maximum="59" Minimum="0" StepFrequency="5" Value="{Binding Minutes, Mode=TwoWay}"/>
+									<controls:CircleClockPicker Name="Hours1" IsEnabled="{Binding EnabledHours}" IsVisible="{Binding VisibleHours}" Width="160" Height="160" Maximum="11" Minimum="0" StepFrequency="1" Value="{Binding Hours, Mode=TwoWay}"/>
+									<controls:CircleClockPicker Name="Hours2" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" Width="160" Height="160" Maximum="23" Minimum="12" StepFrequency="1" Value="{Binding Hours, Mode=TwoWay}"/>
+								</Panel>
+							</controls:Card>
+							<Button IsEnabled="{Binding OnButton}" HorizontalAlignment="Left" Width="260" Command="{Binding Appointment}">Записаться</Button>
+							<controls:Card Width="260" HorizontalAlignment="Left" IsVisible="{Binding VisibleCard}">
+								<StackPanel>
+									<TextBlock IsVisible="{Binding TextAppointmentVisible}" TextWrapping="Wrap" FontSize="15" Width="240" HorizontalAlignment="Center" Classes="Headline6" Text="{Binding TextAppointment}" />
+									<WrapPanel HorizontalAlignment="Center" IsVisible="{Binding ChooseVisible}">
+										<Button Background="Blue" Width="60" Command="{Binding Accept}">Да</Button>
+										<Border Width="2"></Border>
+										<Button Background="LimeGreen" Width="170" Command="{Binding ChangeData}">Изменить данные</Button>
+									</WrapPanel>
+								</StackPanel>
+							</controls:Card>
+						</StackPanel>
 					</StackPanel>
-				</StackPanel>
 					<Grid>
 						<DataGrid Height="570" IsReadOnly="True" Items="{Binding FindPatientForAddVisit}">
 							<DataGrid.Columns>
@@ -101,32 +101,41 @@
 				</TabItem.Header>
 				<StackPanel Margin="5">
 					<WrapPanel>
-					<TextBox Width="240" HorizontalAlignment="Left" Text="{Binding SearchTextHelp}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Поиск пациента" CornerRadius="32" Margin="8">
-						<TextBox.InnerLeftContent>
-							<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
-								<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
-							</Border>
-						</TextBox.InnerLeftContent>
-					</TextBox>
-					<controls:Card Height="50" Margin="5" IsVisible="{Binding ShowHelpButtons}">		
-								<Button Classes="Flat" Background="Blue">Печать справки о посещении врача</Button>
-					</controls:Card>
+						<TextBox Width="240" HorizontalAlignment="Left" Text="{Binding SearchTextHelp}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Поиск пациента" CornerRadius="32" Margin="8">
+							<TextBox.InnerLeftContent>
+								<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
+									<material:MaterialIcon HorizontalAlignment="Center" VerticalAlignment="Center" Kind="Magnify" Width="20" Height="20" />
+								</Border>
+							</TextBox.InnerLeftContent>
+						</TextBox>
 						<controls:Card Height="50" Margin="5" IsVisible="{Binding ShowHelpButtons}">
-							<Button Classes="Accent">Печать больничного листа</Button>
+							<Button Command="{Binding PrintVisitDoctor}" Classes="Flat" Background="Blue">Печать справки о посещении врача</Button>
+						</controls:Card>
+						<controls:Card Height="50" Margin="5" IsVisible="{Binding ShowHelpButtons}">
+							<Button Command="{Binding PrintSickLeave}" Classes="Accent">Печать больничного листа</Button>
+						</controls:Card>
+						<controls:Card Height="50" Margin="5" IsVisible="{Binding ShowHelpButtons}">
+							<Button Command="{Binding PrintListVisits}" Background="Green">Печать списка приёмов пациента</Button>
 						</controls:Card>
 					</WrapPanel>
-					<Grid>
-						<DataGrid Height="570" IsReadOnly="True" Items="{Binding SearchResultsHelp}">
-							<DataGrid.Columns>
-								<DataGridTextColumn Header="Фамилия" Binding="{Binding Фамилия}"/>
-								<DataGridTextColumn Header="Имя" Binding="{Binding Имя}"/>
-								<DataGridTextColumn Header="Отчество" Binding="{Binding Отчество}"/>
-								<DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
-								<DataGridTextColumn Header="Дата рождения" Binding="{Binding Дата_рождения}"/>
-								<DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
-							</DataGrid.Columns>
-						</DataGrid>
-					</Grid>
+					<WrapPanel>
+						<Grid>
+							<DataGrid Height="570" IsReadOnly="True" Items="{Binding SearchResultsHelp}">
+								<DataGrid.Columns>				
+									<DataGridTextColumn Header="Фамилия" Binding="{Binding Фамилия}"/>
+									<DataGridTextColumn Header="Имя" Binding="{Binding Имя}"/>
+									<DataGridTextColumn Header="Отчество" Binding="{Binding Отчество}"/>
+									<DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
+									<DataGridTextColumn Header="Дата рождения" Binding="{Binding Дата_рождения}"/>
+									<DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</Grid>
+						<StackPanel IsVisible="{Binding VisibleListVisits}" Margin="5">
+							<TextBlock VerticalAlignment="Top">Список приёмов</TextBlock>
+							<ComboBox Classes="Outline" Width="200" SelectedItem="{Binding SelectedVisit}" Items="{Binding ListVisitDate}" p1:ComboBoxAssist.Label="Дата приёма"/>
+						</StackPanel>
+					</WrapPanel>
 				</StackPanel>
 			</TabItem>
 			<!--Расписание врачей-->
@@ -134,7 +143,9 @@
 				<TabItem.Header>
 					<TextBlock>Расписание врачей</TextBlock>
 				</TabItem.Header>
-				<StackPanel Margin="5">
+				<Panel>
+					<Button Command="{Binding PrintTimetable}" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Left" Width="180" Height="30">Сохранить расписание</Button>
+					<StackPanel Margin="5">
 						<TextBox Width="350" Text="{Binding SearchText}" BorderBrush="{Binding $self.Foreground}" BorderThickness="1" Classes="solo" Watermark="Введите имя врача или № кабинета" CornerRadius="32" Margin="8">
 							<TextBox.InnerLeftContent>
 								<Border Height="{Binding $parent[TextBox].Height}" Width="{Binding $self.Bounds.Height}">
@@ -142,16 +153,17 @@
 								</Border>
 							</TextBox.InnerLeftContent>
 						</TextBox>
-					<DataGrid HorizontalAlignment="Center" Height="570" IsReadOnly="True" Items="{Binding SearchResults}">
-						<DataGrid.Columns>
-							<DataGridTextColumn Header="ФИО врача" Binding="{Binding Name}"/>
-							<DataGridTextColumn Header="Специальность" Binding="{Binding Speciality}"/>
-							<DataGridTextColumn Header="Кабинет" Binding="{Binding Office}"/>
-							<DataGridTextColumn Header="Дни приёмов" Binding="{Binding Days}"/>
-							<DataGridTextColumn Header="Часы приёмов" Binding="{Binding Time}"/>
-						</DataGrid.Columns>
-					</DataGrid>
-				</StackPanel>
+						<DataGrid HorizontalAlignment="Center" Height="570" IsReadOnly="True" Items="{Binding SearchResults}">
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="ФИО врача" Binding="{Binding Name}"/>
+								<DataGridTextColumn Header="Специальность" Binding="{Binding Speciality}"/>
+								<DataGridTextColumn Header="Кабинет" Binding="{Binding Office}"/>
+								<DataGridTextColumn Header="Дни приёмов" Binding="{Binding Days}"/>
+								<DataGridTextColumn Header="Часы приёмов" Binding="{Binding Time}"/>
+							</DataGrid.Columns>
+						</DataGrid>
+					</StackPanel>
+				</Panel>
 			</TabItem>
 		</TabControl>
 		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Height="30">

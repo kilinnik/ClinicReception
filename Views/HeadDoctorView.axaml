@@ -11,7 +11,26 @@
 	<Panel>
 		<StackPanel Orientation="Horizontal">
 			<TabControl SelectedIndex="0" Margin="5" TabStripPlacement="Left">
-				<!--Запись на приём-->
+				<!--Добавить-->
+				<TabItem>
+					<TabItem.Header>
+						<TextBlock Width="70">Добавить</TextBlock>
+					</TabItem.Header>
+					<StackPanel Margin="5" MaxWidth="350" Width="350" Spacing="5">
+						<TextBox Watermark="Фамилия" Text="{Binding Surname}"/>
+						<TextBox Text="{Binding Name}" Watermark="Имя"/>
+						<TextBox Text="{Binding Patronymic}" Watermark="Отчество"/>
+						<DatePicker SelectedDate="{Binding HireDate}" p1:TextFieldAssist.Label="Дата приёма на работу" />
+						<TextBox Text="{Binding Seniority}" Watermark="Стаж"/>
+						<TextBox Text="{Binding Adress}" Watermark="Адрес"/>
+						<TextBox Text="{Binding Speciality}" Watermark="Специальность"/>
+						<TextBox Text="{Binding AreaNumber}" Watermark="Номер участка"/>
+						<TextBox Text="{Binding Phone}" Watermark="Телефон"/>
+						<Button Width="200" Command="{Binding AddDoctorButton}">Добавить врача</Button>
+						<TextBlock IsVisible="{Binding SuccessAddDoctor}" Margin="20" HorizontalAlignment="Center">Врач добавлен</TextBlock>
+					</StackPanel>
+				</TabItem>
+				<!--Удалить-->
 				<TabItem>
 					<TabItem.Header>
 						<TextBlock Width="70">Удалить</TextBlock>
@@ -42,35 +61,9 @@
 									<Button VerticalAlignment="Top" Height="30" IsVisible="{Binding ShowDeleteButton}" Command="{Binding DeleteDoctor}" HorizontalAlignment="Left" Width="100" Classes="Outline Dark" Content="Удалить" ></Button>
 								</WrapPanel>
 							</StackPanel>
-
-							<!--<ListBox Items="{Binding SearchResults}">
-							<ListBox.ItemsPanel>
-								<ItemsPanelTemplate>
-									<StackPanel />
-								</ItemsPanelTemplate>
-							</ListBox.ItemsPanel>
-						</ListBox>-->
 						</DockPanel>
 					</StackPanel>
-				</TabItem>
-				<TabItem>
-					<TabItem.Header>
-						<TextBlock Width="70">Добавить</TextBlock>
-					</TabItem.Header>
-					<StackPanel Margin="5" MaxWidth="350" Width="350" Spacing="5">						
-						<TextBox Watermark="Фамилия" Text="{Binding Surname}"/>
-						<TextBox Text="{Binding Name}" Watermark="Имя"/>
-						<TextBox Text="{Binding Patronymic}" Watermark="Отчество"/>						
-						<DatePicker SelectedDate="{Binding HireDate}" p1:TextFieldAssist.Label="Дата приёма на работу" />
-						<TextBox Text="{Binding Seniority}" Watermark="Стаж"/>
-						<TextBox Text="{Binding Adress}" Watermark="Адрес"/>
-						<TextBox Text="{Binding Speciality}" Watermark="Специальность"/>
-						<TextBox Text="{Binding AreaNumber}" Watermark="Номер участка"/>
-						<TextBox Text="{Binding Phone}" Watermark="Телефон"/>
-						<Button Width="200" Command="{Binding AddDoctorButton}">Добавить врача</Button>
-						<TextBlock IsVisible="{Binding SuccessAddDoctor}" Margin="20" HorizontalAlignment="Center">Врач добавлен</TextBlock>
-					</StackPanel>
-				</TabItem>
+				</TabItem>			
 			</TabControl>
 		</StackPanel>
 		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Height="30">
