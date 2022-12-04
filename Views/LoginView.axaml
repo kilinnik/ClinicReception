@@ -10,16 +10,25 @@
         x:Class="СlinicReception.Views.LoginView">
 	<Panel>
 		<Button Command="{Binding Registration}" Background="DarkSlateGray" HorizontalAlignment="Left" VerticalAlignment="Top" Width="160" Height="30">Зарегистрироваться</Button>
-		<Button Command="{Binding Theme}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
+		<Button Command="{Binding ChangeTheme}" Background="CornflowerBlue" HorizontalAlignment="Right" VerticalAlignment="Top">
 			<material:MaterialIcon Kind="ThemeLightDark"></material:MaterialIcon>
 		</Button>
 		<StackPanel Width="300" MaxWidth="300" Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<ProgressBar IsVisible="{Binding VisibleLoad}" Classes="circular" IsIndeterminate="True" />			
 			<TextBlock HorizontalAlignment="Center" IsVisible="{Binding ShowMesWrongData}" Foreground="Red" Text="Неправильный логин или пароль"/>
 			<controls:Card>
 					<TextBlock FontSize="20" HorizontalAlignment="Center" Classes="Headline6" Text="Авторизация" />
 			</controls:Card>
 			<TextBox Text="{Binding Login}" UseFloatingWatermark="True" Classes="outline dense" p1:TextFieldAssist.Label="Логин"/>
 			<TextBox Text="{Binding Password}" UseFloatingWatermark="True" Classes="outline dense revealPasswordButton" p1:TextFieldAssist.Label="Пароль" PasswordChar="*"/>
+			<!--<ComboBox Classes="Outline" p1:ComboBoxAssist.Label="Роль">
+				<TextBlock>Пациент</TextBlock>
+				<TextBlock>Врач</TextBlock>
+				<TextBlock>Регистратор</TextBlock>
+				<TextBlock>Заведующий поликлиникой</TextBlock>
+				<TextBlock>Администратор данных</TextBlock>
+				<TextBlock>Администратор БД</TextBlock>
+			</ComboBox>-->
 			<Button Command="{Binding CheckLogin}">Войти</Button>
 		</StackPanel>
 	</Panel>

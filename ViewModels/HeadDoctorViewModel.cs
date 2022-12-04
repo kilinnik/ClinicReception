@@ -47,7 +47,7 @@ namespace СlinicReception.ViewModels
             using var db = new СlinicReceptionContext();
             foreach (var result in SearchResults)
             {
-                db.Remove(db.Расписание.First(x => x.Табельный_номер == result.Табельный_номер));
+                db.Remove(db.Расписание.FirstOrDefault(x => x.Табельный_номер == result.Табельный_номер));
                 db.SaveChanges();
                 db.Remove(db.Врач.First(x => x.Табельный_номер == result.Табельный_номер));
                 if (db.Приём.Any(x => x.Табельный_номер == result.Табельный_номер)) db.Remove(db.Приём.Where(x => x.Табельный_номер == result.Табельный_номер));
@@ -144,7 +144,6 @@ namespace СlinicReception.ViewModels
             using var db = new СlinicReceptionContext();
             var number = db.Врач.OrderBy(x => x.Табельный_номер).Last().Табельный_номер + 1;
             db.Врач.Add(new Doctor(number, Surname, Name, Patronymic, DateTime.Parse(HireDate), (int)Seniority, Adress, Speciality, (int)AreaNumber, (long)Phone));
-            db.Расписание.Add(new Timetable(number, null, null, null));
             db.SaveChanges();
             SuccessAddDoctor = true;
         }

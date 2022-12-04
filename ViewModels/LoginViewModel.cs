@@ -6,16 +6,20 @@ using Material.Styles.Themes;
 using Material.Styles.Themes.Base;
 using Material.Colors;
 using System.Linq;
+using System.Windows.Input;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace СlinicReception.ViewModels
 {
     public class LoginViewModel: ViewModelBase
     {
-        MainWindowViewModel mw; //для смены view
-        public MainWindowViewModel MW
+        MainWindowViewModel mainWindow; //для смены view
+        public MainWindowViewModel MainWindow
         {
-            get => mw;
-            private set => this.RaiseAndSetIfChanged(ref mw, value);
+            get => mainWindow;
+            private set => this.RaiseAndSetIfChanged(ref mainWindow, value);
         }
 
         bool showMesWrongData; //для сообщения о неправильных данных
@@ -25,48 +29,63 @@ namespace СlinicReception.ViewModels
             private set => this.RaiseAndSetIfChanged(ref showMesWrongData, value);
         }
 
-        string? login; //логин
+        string? login; 
         public string? Login
         {
             get => login;
             private set => this.RaiseAndSetIfChanged(ref login, value);
         }
 
-        string? password; //пароль
+        string? password; 
         public string? Password
         {
             get => password;
             private set => this.RaiseAndSetIfChanged(ref password, value);
         }
 
-        public void Registration() //view регистрации
+        private static readonly MaterialTheme MaterialThemeStyles = Application.Current!.LocateMaterialTheme<MaterialTheme>();
+
+        bool isDark;
+
+        public void ChangeTheme() 
         {
-            MW.Registration();
+            MaterialThemeStyles.BaseTheme = isDark ? BaseThemeMode.Light : BaseThemeMode.Dark;
+            isDark= !isDark;
         }
 
-        public void Theme() //изменить тему
+        private bool visibleLoad;
+        public bool VisibleLoad
         {
-            MW.ChangeTheme();
+            get => visibleLoad;
+            set => this.RaiseAndSetIfChanged(ref visibleLoad, value);
         }
 
-        public void CheckLogin() //проверка данных и вызов соответсвующего view
+        public async void CheckLogin()
         {
+            VisibleLoad = true;
             using var db = new СlinicReceptionContext();
-            if (db.Log_In.Any(x => x.Login == login && x.Password == Password))
+            var user = await db.Log_In.FirstOrDefaultAsync(x => x.Login == login && x.Password == Password);
+            if (user != null)
             {
-                if (db.Log_In.First(x => x.Login == Login).Role == "Админ БД") MW.DbAdmin();
-                if (db.Log_In.First(x => x.Login == Login).Role == "Админ данных") MW.DataAdmin();
-                if (db.Log_In.First(x => x.Login == Login).Role == "Главврач") MW.HeadDoctor();
-                if (db.Log_In.First(x => x.Login == Login).Role == "Регистратор") MW.Registrar();
-                if (db.Log_In.First(x => x.Login == Login).Role == "Врач") MW.Doctor((int)db.Log_In.First(x => x.Login == Login).ID);
-                if (db.Log_In.First(x => x.Login == Login).Role == "Пациент") MW.Patient((int)db.Log_In.First(x => x.Login == Login).ID);
+                if (user.Role == "Админ БД") MainWindow.DbAdmin();
+                if (user.Role == "Админ данных") MainWindow.DataAdmin();
+                if (user.Role == "Главврач") MainWindow.HeadDoctor();
+                if (user.Role == "Регистратор") MainWindow.Registrar();
+                if (user.Role == "Врач") MainWindow.Doctor((int)user.ID);
+                if (user.Role == "Пациент") MainWindow.Patient((int)user.ID);
             }
             else ShowMesWrongData = true;
+            VisibleLoad = false;
         }
 
         public LoginViewModel(MainWindowViewModel mw)
         {
-            MW = mw;
+            isDark = MaterialThemeStyles.BaseTheme == BaseThemeMode.Dark ? true : false; MainWindow = mw;
+        }
+
+        public void Registration() //view регистрации
+        {
+            MainWindow.Registration();
         }
     }
 }

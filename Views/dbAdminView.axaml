@@ -9,9 +9,116 @@
              x:Class="СlinicReception.Views.DbAdminView">
 	<Panel>
 		<StackPanel>
-			<TabControl>
-				
+			<TabControl SelectedIndex="0">
+				<!--Изменение данных о пользователях-->
+				<TabItem Header="Изменение данных о пользователях">
+					<WrapPanel>
+						<StackPanel Margin="5">
+							<DataGrid Height="640" Items="{Binding DataLogins}">
+								<DataGrid.Columns>
+									<DataGridTextColumn IsReadOnly="True" Header="Логин" Binding="{Binding Login}"/>
+									<DataGridTextColumn Header="Пароль" Binding="{Binding Password}"/>
+									<DataGridTextColumn Header="Роль" Binding="{Binding Role}"/>
+									<DataGridTextColumn Header="Табельный номер (карты)" Binding="{Binding ID}"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</StackPanel>
+						<StackPanel>
+							<controls:Card Width="450" Height="50" Margin="5">
+								<Button Command="{Binding UpdateUsers}" Background="Blue">Обновить данные для входа</Button>
+							</controls:Card>
+							<WrapPanel>
+								<TextBox Margin="5" Width="230" UseFloatingWatermark="True" Text="{Binding LoginForDelete}" p1:TextFieldAssist.Label="Логин пользователя"/>
+								<controls:Card Width="220" Height="50" Margin="5">
+									<Button Command="{Binding DeleteUser}" Classes="Accent">Удалить пользователя</Button>
+								</controls:Card>
+							</WrapPanel>
+							<WrapPanel Margin="5">
+								<StackPanel Margin="5">
+									<TextBox Classes="outline" Height="60" Width="230" UseFloatingWatermark="True" Text="{Binding Login}" p1:TextFieldAssist.Label="Логин"/>
+									<TextBox Classes="outline" UseFloatingWatermark="True" Text="{Binding Password}" p1:TextFieldAssist.Label="Пароль"/>
+								</StackPanel>
+								<StackPanel Margin="5">
+									<ComboBox HorizontalAlignment="Left" Classes="Outline" Width="220" SelectedItem="{Binding SelectedRole}" Items="{Binding Roles}" p1:ComboBoxAssist.Label="Роль"/>
+									<TextBox Classes="outline" UseFloatingWatermark="True" Width="220" Text="{Binding ID}" p1:TextFieldAssist.Label="Табельный номер (карты)"/>
+								</StackPanel>								
+							</WrapPanel>
+							<controls:Card Width="460" Height="50" Margin="5">
+								<Button Command="{Binding AddUser}" Background="Green">Добавить полльзователя</Button>
+							</controls:Card>
+						</StackPanel>
+					</WrapPanel>
+				</TabItem>
+				<!--Препараты-->
+				<TabItem Header="Препараты">
+					<Panel>
+						<WrapPanel>
+							<StackPanel Margin="5">
+								<DataGrid Height="640" Items="{Binding Preparations}">
+									<DataGrid.Columns>
+										<DataGridTextColumn IsReadOnly="True" Header="Код препарата" Binding="{Binding Код_препарата}"/>
+										<DataGridTextColumn Header="Название препарата" Binding="{Binding Название_препарата}"/>									
+									</DataGrid.Columns>
+								</DataGrid>
+							</StackPanel>
+							<StackPanel>
+								<controls:Card Width="350" Height="50" Margin="5">
+									<Button Command="{Binding UpdatePreparations}" Background="Blue">Обновить данные</Button>
+								</controls:Card>
+								<WrapPanel>
+									<TextBox Margin="5" Width="170" UseFloatingWatermark="True" Text="{Binding PreparationNumber}" p1:TextFieldAssist.Label="Номер препарата"/>
+									<controls:Card Width="170" Height="50" Margin="5">
+										<Button Command="{Binding DeletePreparation}" Classes="Accent">Удалить препарат</Button>
+									</controls:Card>
+								</WrapPanel>
+								<WrapPanel>
+									<TextBox Margin="5" Width="170" UseFloatingWatermark="True" Text="{Binding PreparationName}" p1:TextFieldAssist.Label="Название препарата"/>
+									<controls:Card Width="170" Height="50" Margin="5">
+										<Button Command="{Binding AddPreparation}" Background="Green">Добавить препарат</Button>
+									</controls:Card>
+								</WrapPanel>			
+							</StackPanel>
+						</WrapPanel>
+					</Panel>
+				</TabItem>
+				<!--Диагнозы-->
+				<TabItem Header="Диагнозы">
+					<Panel>
+						<WrapPanel>
+							<StackPanel Margin="5">
+								<DataGrid Height="640" Items="{Binding Diagnosises}">
+									<DataGrid.Columns>
+										<DataGridTextColumn IsReadOnly="True" Header="Код диагноза" Binding="{Binding Код_диагноза}"/>
+										<DataGridTextColumn Header="Название диагноза" Binding="{Binding Название}"/>
+										<DataGridTextColumn Header="Код препарата" Binding="{Binding Код_препарата}"/>
+									</DataGrid.Columns>
+								</DataGrid>
+							</StackPanel>
+							<StackPanel>
+								<controls:Card Width="350" Height="50" Margin="5">
+									<Button Command="{Binding UpdateDiagnosises}" Background="Blue">Обновить данные</Button>
+								</controls:Card>
+								<WrapPanel>
+									<TextBox Margin="5" Width="170" UseFloatingWatermark="True" Text="{Binding DiagnosisNumber}" p1:TextFieldAssist.Label="Номер диагноза"/>
+									<controls:Card Width="170" Height="50" Margin="5">
+										<Button Command="{Binding DeleteDiagnosis}" Classes="Accent">Удалить диагноз</Button>
+									</controls:Card>
+								</WrapPanel>
+								<WrapPanel>
+									<TextBox Margin="5" Width="170" UseFloatingWatermark="True" Text="{Binding DiagnosisName}" p1:TextFieldAssist.Label="Название диагноза"/>
+									<TextBox Margin="5" Width="170" UseFloatingWatermark="True" Text="{Binding PreparationCode}" p1:TextFieldAssist.Label="Код препарата"/>
+								</WrapPanel>
+								<controls:Card Width="350" Height="50" Margin="5">
+									<Button Command="{Binding AddDiagnosis}" Background="Green">Добавить диагноз</Button>
+								</controls:Card>
+							</StackPanel>
+						</WrapPanel>
+					</Panel>
+				</TabItem>
 			</TabControl>
 		</StackPanel>
+		<Button Command="{Binding Logout}" Background="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Height="30">
+			<material:MaterialIcon Kind="Login" />
+		</Button>
 	</Panel>
 </UserControl>

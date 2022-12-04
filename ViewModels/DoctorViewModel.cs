@@ -1,9 +1,11 @@
 ﻿using Avalonia.Controls;
+using NGS.Templater;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -15,83 +17,92 @@ namespace СlinicReception.ViewModels
 {
     public class DoctorViewModel: ViewModelBase
     {
-        int ID { get; set; }
+        int ID { get; set; } //табельный номер врача
+
         MainWindowViewModel mw;
         public MainWindowViewModel MW
         {
             get => mw;
             private set => this.RaiseAndSetIfChanged(ref mw, value);
         }
-        TextBlock? visitDate;
-        public TextBlock? VisitDate
+
+        string? selectedVisitDate;
+        public string? SelectedVisitDate
         {
-            get => visitDate;
-            set => this.RaiseAndSetIfChanged(ref visitDate, value);
+            get => selectedVisitDate;
+            set => this.RaiseAndSetIfChanged(ref selectedVisitDate, value);
         }
-        ObservableCollection<TextBlock> listVisitDate = new ObservableCollection<TextBlock>();
-        public ObservableCollection<TextBlock> ListVisitDate
+
+        ObservableCollection<string> listVisitDate = new ObservableCollection<string>(); //список приёмов
+        public ObservableCollection<string> ListVisitDate
         {
             get => listVisitDate;
             set => this.RaiseAndSetIfChanged(ref listVisitDate, value);
         }
+
         private bool showPatient;
         public bool ShowPatient
         {
             get => showPatient;
             set => this.RaiseAndSetIfChanged(ref showPatient, value);
         }
-        ObservableCollection<TextBlock> diagnosises = new ObservableCollection<TextBlock>();
-        public ObservableCollection<TextBlock> Diagnosises
+
+        ObservableCollection<string> diagnosises = new ObservableCollection<string>();
+        public ObservableCollection<string> Diagnosises
         {
             get => diagnosises;
             set => this.RaiseAndSetIfChanged(ref diagnosises, value);
         }
-        TextBlock? diagnosis;
-        public TextBlock? Diagnosis
+
+        string? selectedDiagnosis;
+        public string? SelectedDiagnosis
         {
-            get => diagnosis;
-            set => this.RaiseAndSetIfChanged(ref diagnosis, value);
+            get => selectedDiagnosis;
+            set => this.RaiseAndSetIfChanged(ref selectedDiagnosis, value);
         }
-        ObservableCollection<TextBlock> preparations = new ObservableCollection<TextBlock>();
-        public ObservableCollection<TextBlock> Preparations
+
+        ObservableCollection<string> preparations = new ObservableCollection<string>();
+        public ObservableCollection<string> Preparations
         {
             get => preparations;
             set => this.RaiseAndSetIfChanged(ref preparations, value);
         }
-        TextBlock? preparation;
-        public TextBlock? Preparation
+
+        string? selectedPreparation;
+        public string? SelectedPreparation
         {
-            get => preparation;
-            set => this.RaiseAndSetIfChanged(ref preparation, value);
+            get => selectedPreparation;
+            set => this.RaiseAndSetIfChanged(ref selectedPreparation, value);
         }
+
         string? namePatient;
         public string? NamePatient
         {
             get => namePatient;
             set => this.RaiseAndSetIfChanged(ref namePatient, value);
         }
+
         string? survey;
         public string? Survey
         {
             get => survey;
             set => this.RaiseAndSetIfChanged(ref survey, value);
         }
+
         string? sickLeave;
         public string? SickLeave
         {
             get => sickLeave;
             set => this.RaiseAndSetIfChanged(ref sickLeave, value);
         }
+
         string? complaints;
         public string? Complaints
         {
             get => complaints;
             set => this.RaiseAndSetIfChanged(ref complaints, value);
         }
-        public void Logout()
-        {
-            MW.Login();
-        }
+
         public void FillInfo(string date)
         {
             if (date != null)
@@ -135,109 +146,136 @@ namespace СlinicReception.ViewModels
                 {
                     if (db.Жалобы.First(x => x.Номер_визита == visit.Номер_визита).Код_диагноза == diagnosis.Код_диагноза)
                     {
-                        var tb = new TextBlock() { Text = diagnosis.Название };
+                        var tb = diagnosis.Название;
                         Diagnosises.Add(tb);
-                        Diagnosis = tb;
+                        SelectedDiagnosis = tb;
                         d = diagnosis;
                     }
-                    else Diagnosises.Add(new TextBlock() { Text = diagnosis.Название });
+                    else Diagnosises.Add(diagnosis.Название);
                 }
                 var preparations = db.Препарат.OrderBy(y => y.Название_препарата).ToArray();
                 foreach (var preparation in preparations)
                 {
                     if (d != null && d.Код_препарата == preparation.Код_препарата)
                     {
-                        var tb = new TextBlock() { Text = preparation.Название_препарата };
+                        var tb = preparation.Название_препарата;
                         Preparations.Add(tb);
-                        Preparation = tb;
+                        SelectedPreparation = tb;
                     }
-                    else Preparations.Add(new TextBlock() { Text = preparation.Название_препарата });                 
+                    else Preparations.Add(preparation.Название_препарата);                 
                 }
                 ShowPatient = true;
             }
         }
+
         public void SavePatientData()
         {
             using var db = new СlinicReceptionContext();
-            var dateTime = DateTime.Parse(VisitDate.Text);
+            var dateTime = DateTime.Parse(SelectedVisitDate);
             var visit = db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID);
             var complaint = db.Жалобы.First(x => x.Номер_визита == visit.Номер_визита);
             if (complaint.Жалобы != Complaints)
             {
                 db.Жалобы.First(x => x.Номер_визита == visit.Номер_визита).Жалобы = Complaints;
-                db.Жалобы.First(x => x.Номер_визита == visit.Номер_визита).Код_диагноза = db.Диагноз.First(x => x.Название == Diagnosis.Text).Код_диагноза;
-                db.Диагноз.First(x => x.Название == Diagnosis.Text).Код_препарата = db.Препарат.First(x => x.Название_препарата == Preparation.Text).Код_препарата;
+                db.Жалобы.First(x => x.Номер_визита == visit.Номер_визита).Код_диагноза = db.Диагноз.First(x => x.Название == SelectedDiagnosis).Код_диагноза;
+                db.Диагноз.First(x => x.Название == SelectedDiagnosis).Код_препарата = db.Препарат.First(x => x.Название_препарата == SelectedPreparation).Код_препарата;
                 db.SaveChanges();
-            }
-            
+            }        
         }
+
+        public void PrintPatinetInfo()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("ФИО пациента");
+            dt.Columns.Add("Обследование");
+            dt.Columns.Add("Больничный лист");
+            dt.Columns.Add("Жалобы");
+            dt.Columns.Add("Диагноз");
+            dt.Columns.Add("Препарат");
+            dt.Rows.Add(NamePatient, Survey, SickLeave, Complaints, SelectedDiagnosis, SelectedPreparation);
+            using (var doc = Configuration.Factory.Open("Информация_о_пациенте.xlsx"))
+            {
+                doc.Process(new { Table1 = dt });
+            }
+        }
+
         public DoctorViewModel(int id, MainWindowViewModel mw)
         {
             ID = id; MW = mw;
             using var db = new СlinicReceptionContext();
             var visitDates = db.Приём.Where(x => x.Табельный_номер == ID).OrderBy(z => z.Дата_приёма).Select(y => y.Дата_приёма);
-            foreach (var date in visitDates)
-            {
-                ListVisitDate.Add(new TextBlock() { Text = date.ToString("dd/MM/yyyy HH:mm") });
-            }
-            this.WhenAnyValue(x => x.VisitDate.Text).Subscribe(FillInfo!);
-
-
+            foreach (var date in visitDates) ListVisitDate.Add(date.ToString("dd/MM/yyyy HH:mm"));
+            this.WhenAnyValue(x => x.SelectedVisitDate).Subscribe(FillInfo!);
         }
+
+        public void Logout()
+        {
+            MW.Login();
+        }
+
         private bool visibleSickLeaveButton;
         public bool VisibleSickLeaveButton
         {
             get => visibleSickLeaveButton;
             set => this.RaiseAndSetIfChanged(ref visibleSickLeaveButton, value);
         }
+
         private bool showSurvey;
         public bool ShowSurvey
         {
             get => showSurvey;
             set => this.RaiseAndSetIfChanged(ref showSurvey, value);
         }
+
         private bool showSickLeave;
         public bool ShowSickLeave
         {
             get => showSickLeave;
             set => this.RaiseAndSetIfChanged(ref showSickLeave, value);
         }
+
         string? surveyButtonText;
         public string? SurveyButtonText
         {
             get => surveyButtonText;
             set => this.RaiseAndSetIfChanged(ref surveyButtonText, value);
         }
+
         string? sickLeaveButtonText;
         public string? SickLeaveButtonText
         {
             get => sickLeaveButtonText;
             set => this.RaiseAndSetIfChanged(ref sickLeaveButtonText, value);
         }
-        ObservableCollection<TextBlock> surveyList = new ObservableCollection<TextBlock>();
-        public ObservableCollection<TextBlock> SurveyList
+
+        ObservableCollection<string> surveyList = new ObservableCollection<string>();
+        public ObservableCollection<string> SurveyList
         {
             get => surveyList;
             set => this.RaiseAndSetIfChanged(ref surveyList, value);
         }
-        TextBlock? curSurvey;
-        public TextBlock? CurSurvey
+
+        string? curSurvey;
+        public string? CurSurvey
         {
             get => curSurvey;
             set => this.RaiseAndSetIfChanged(ref curSurvey, value);
         }
+
         string? sickLeaveDateOpen;
         public string? SickLeaveDateOpen
         {
             get => sickLeaveDateOpen;
             set => this.RaiseAndSetIfChanged(ref sickLeaveDateOpen, value);
         }
+
         string? sickLeaveDateClose;
         public string? SickLeaveDateClose
         {
             get => sickLeaveDateClose;
             set => this.RaiseAndSetIfChanged(ref sickLeaveDateClose, value);
         }
+
         public void SurveyButton()
         {
             if (SurveyButtonText == "Назначить обследование")
@@ -247,15 +285,15 @@ namespace СlinicReception.ViewModels
                 var surveys = db.Обследование.Distinct().ToArray();
                 foreach (var survey in surveys)
                 {
-                    SurveyList.Add(new TextBlock() { Text = survey.Название_обследования});
+                    SurveyList.Add(survey.Название_обследования);
                 }
                 SurveyButtonText = "Сохранить";
             }
             else
             {
                 using var db = new СlinicReceptionContext();
-                var dateTime = DateTime.Parse(VisitDate.Text);
-                db.Обследование.Add(new Survey(db.Обследование.OrderBy(x => x.Номер_обследования).Last().Номер_обследования + 1, CurSurvey.Text, db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID).Номер_визита));
+                var dateTime = DateTime.Parse(SelectedVisitDate);
+                db.Обследование.Add(new Survey(db.Обследование.OrderBy(x => x.Номер_обследования).Last().Номер_обследования + 1, CurSurvey, db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID).Номер_визита));
                 db.SaveChanges();
                 ShowSurvey = false;
                 var survey = "не назначено";
@@ -274,6 +312,7 @@ namespace СlinicReception.ViewModels
                 Survey = survey;
             }
         }
+
         public void SickLeaveButton()
         {
             if (SickLeaveButtonText == "Создать больничный лист")
@@ -286,7 +325,7 @@ namespace СlinicReception.ViewModels
                 SickLeaveButtonText = "Создать больничный лист";
                 VisibleSickLeaveButton = false;
                 using var db = new СlinicReceptionContext();
-                var dateTime = DateTime.Parse(VisitDate.Text);
+                var dateTime = DateTime.Parse(SelectedVisitDate);
                 var visit = db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID);
                 SickLeave = db.Больничный_лист.First(x => x.Номер_визита == visit.Номер_визита).Статус;
                 db.Больничный_лист.Add(new SickLeave(db.Приём.First(x => x.Дата_приёма == dateTime && x.Табельный_номер == ID).Номер_визита, DateTime.Parse(SickLeaveDateOpen), DateTime.Parse(SickLeaveDateClose), "открыт"));

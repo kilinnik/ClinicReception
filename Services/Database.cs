@@ -90,8 +90,8 @@ namespace СlinicReception.Services
         [Key]
         public int Код_диагноза { get; set; }
         public string Название { get; set; }
-        public int Код_препарата { get; set; }
-        public Diagnosis(int код_диагноза, string название, int код_препарата)
+        public int? Код_препарата { get; set; }
+        public Diagnosis(int код_диагноза, string название, int? код_препарата)
         {
             Код_диагноза = код_диагноза;
             Название = название;
