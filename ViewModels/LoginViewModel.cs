@@ -1,14 +1,8 @@
 ﻿using Avalonia;
 using ReactiveUI;
-using System.Collections.Generic;
 using СlinicReception.Services;
 using Material.Styles.Themes;
 using Material.Styles.Themes.Base;
-using Material.Colors;
-using System.Linq;
-using System.Windows.Input;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace СlinicReception.ViewModels
@@ -80,7 +74,7 @@ namespace СlinicReception.ViewModels
 
         public LoginViewModel(MainWindowViewModel mw)
         {
-            isDark = MaterialThemeStyles.BaseTheme == BaseThemeMode.Dark ? true : false; MainWindow = mw;
+            isDark = MaterialThemeStyles.BaseTheme == BaseThemeMode.Dark; MainWindow = mw;
         }
 
         public void Registration() //view регистрации

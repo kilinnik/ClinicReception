@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "СlinicReception", "СlinicReception.csproj", "{475606A2-4818-4A65-B6A7-E9014420FD65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "СlinicReception", "СlinicReception.csproj", "{475606A2-4818-4A65-B6A7-E9014420FD65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCR", "TestCR\TestCR.csproj", "{EAF6BD04-9222-4400-B538-2BF9C90147E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{475606A2-4818-4A65-B6A7-E9014420FD65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{475606A2-4818-4A65-B6A7-E9014420FD65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{475606A2-4818-4A65-B6A7-E9014420FD65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAF6BD04-9222-4400-B538-2BF9C90147E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAF6BD04-9222-4400-B538-2BF9C90147E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAF6BD04-9222-4400-B538-2BF9C90147E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAF6BD04-9222-4400-B538-2BF9C90147E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

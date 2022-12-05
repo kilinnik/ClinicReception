@@ -1,25 +1,16 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
-using DynamicData.Binding;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
 using СlinicReception.Services;
 using Material.Styles.Themes;
 using Material.Styles.Themes.Base;
-using Material.Colors;
 
 namespace СlinicReception.ViewModels
 {
     public class RegistrationViewModel: ViewModelBase
     {
         //список улиц по участкам
-        static List<List<string>> ListOfArea = new List<List<string>>() { new List<string> {"ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> {"ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> {"ул. Филатова", "Школьная ул." } };
+        static readonly List<List<string>> ListOfArea = new() { new List<string> {"ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> {"ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> {"ул. Филатова", "Школьная ул." } };
        
         int? indexCurStreet; //индекс текущей улицы
         public int? IndexCurStreet 
@@ -28,7 +19,7 @@ namespace СlinicReception.ViewModels
             set => this.RaiseAndSetIfChanged(ref indexCurStreet, value);
         }
 
-        ObservableCollection<string> streets = new ObservableCollection<string>(); //список улиц
+        ObservableCollection<string> streets = new(); //список улиц
         public ObservableCollection<string> Streets
         {
             get => streets;
@@ -219,7 +210,7 @@ namespace СlinicReception.ViewModels
 
         public RegistrationViewModel(MainWindowViewModel mw)
         {
-            isDark = MaterialThemeStyles.BaseTheme == BaseThemeMode.Dark ? true : false;
+            isDark = MaterialThemeStyles.BaseTheme == BaseThemeMode.Dark;
             LabelDateOfBirth = "Дата рождения"; MW = mw; LabelAdress = "Улица";
             for (int i = 0; i < ListOfArea.Count; i++)
             {

@@ -1,16 +1,7 @@
-﻿using Avalonia.Controls;
-using NGS.Templater;
+﻿using NGS.Templater;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using СlinicReception.Models;
 using СlinicReception.Services;
 
 namespace СlinicReception.ViewModels

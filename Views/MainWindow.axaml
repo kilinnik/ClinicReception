@@ -4,8 +4,6 @@
 		xmlns:views="clr-namespace:СlinicReception.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:p1="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
-		xmlns:dialogHost="clr-namespace:DialogHost;assembly=DialogHost.Avalonia"
         Width="1100" Height="700"
         x:Class="СlinicReception.Views.MainWindow"
         Icon="/Assets/clinic-logo.ico"

@@ -1,17 +1,8 @@
-﻿using Avalonia.Controls;
-using CsvHelper;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using СlinicReception.Models;
 using СlinicReception.Services;
-using System.IO;
 using NGS.Templater;
 
 namespace СlinicReception.ViewModels
@@ -26,7 +17,7 @@ namespace СlinicReception.ViewModels
         }
         //Добавить пациента
         //список улиц по участкам
-        static List<List<string>> ListOfArea = new List<List<string>>() { new List<string> { "ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> { "ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> { "ул. Филатова", "Школьная ул." } };
+        static readonly List<List<string>> ListOfArea = new() { new List<string> { "ул. им. 40-летия Победы", "ул. Островского", "Коллективная ул." }, new List<string> { "ул. Жлобы", "ул. МОПР", "Первомайская ул.", "ул. 1 Мая" }, new List<string> { "ул. Филатова", "Школьная ул." } };
        
         string? surname;
         public string? Surname
@@ -63,7 +54,7 @@ namespace СlinicReception.ViewModels
             private set => this.RaiseAndSetIfChanged(ref dateOfBirth, value);
         }
 
-        ObservableCollection<string> streets = new ObservableCollection<string>(); //список улиц
+        ObservableCollection<string> streets = new(); //список улиц
         public ObservableCollection<string> Streets
         {
             get => streets;
@@ -186,9 +177,9 @@ namespace СlinicReception.ViewModels
 
         //Запись на приём
         //словарь для сопоставления выбранного дня приёма с расписанием врача
-        Dictionary<string, string> DaysWeek = new Dictionary<string, string>() { { "Пн-Пт", "Monday, Tuesday, Wednesday, Thursday, Friday" }, { "Пн-Чт", "Monday, Tuesday, Wednesday, Thursday" }, { "Вт-Пт", "Tuesday, Wednesday, Thursday, Friday" }, { "Вт-Сб", "Tuesday, Wednesday, Thursday, Friday, Saturday" } };
+        readonly Dictionary<string, string> DaysWeek = new() { { "Пн-Пт", "Monday, Tuesday, Wednesday, Thursday, Friday" }, { "Пн-Чт", "Monday, Tuesday, Wednesday, Thursday" }, { "Вт-Пт", "Tuesday, Wednesday, Thursday, Friday" }, { "Вт-Сб", "Tuesday, Wednesday, Thursday, Friday, Saturday" } };
         
-        ObservableCollection<string> specialities = new ObservableCollection<string>(); //список специальностей
+        ObservableCollection<string> specialities = new(); //список специальностей
         public ObservableCollection<string> Specialities
         {
             get => specialities;
@@ -405,14 +396,14 @@ namespace СlinicReception.ViewModels
 
         }
 
-        public bool CheckTime(Timetable timetable, int hours)
+        public static bool CheckTime(Timetable timetable, int hours)
         {
             bool result = false;
             var time = timetable.Часы_приёма.Split(",");
             foreach (var t in time)
             {
                 var temp = t.Split("-");
-                if (Convert.ToUInt32(temp[0].Substring(0, 2)) <= hours && Convert.ToUInt32(temp[1].Substring(0, 2)) > hours) result = true;
+                if (Convert.ToUInt32(temp[0][..2]) <= hours && Convert.ToUInt32(temp[1][..2]) > hours) result = true;
             }
             return result;
         }
@@ -470,7 +461,7 @@ namespace СlinicReception.ViewModels
             set => this.RaiseAndSetIfChanged(ref selectedVisit, value);
         }
 
-        ObservableCollection<string> listVisitDate = new ObservableCollection<string>(); //список приёмов
+        ObservableCollection<string> listVisitDate = new(); //список приёмов
         public ObservableCollection<string> ListVisitDate
         {
             get => listVisitDate;
@@ -506,10 +497,8 @@ namespace СlinicReception.ViewModels
         {
             using var db = new СlinicReceptionContext();
             string name = $"{SearchResultsHelp.First().Фамилия} {SearchResultsHelp.First().Имя} {SearchResultsHelp.First().Отчество}";
-            using (var doc = Configuration.Factory.Open("Справка_о_посещении_врача.docx"))
-            {
-                doc.Process(new { Name = name, Age = SearchResultsHelp.First().Дата_рождения.ToString("dd/MM/yyyy"), DateTime = SelectedVisit, Date = SelectedVisit.Substring(0, SelectedVisit.Length - 5) });
-            }
+            using var doc = Configuration.Factory.Open("Справка_о_посещении_врача.docx");
+            doc.Process(new { Name = name, Age = SearchResultsHelp.First().Дата_рождения.ToString("dd/MM/yyyy"), DateTime = SelectedVisit, Date = SelectedVisit[..^5] });
         }
 
         public void PrintSickLeave()
@@ -521,10 +510,8 @@ namespace СlinicReception.ViewModels
             var sicklLeave = db.Больничный_лист.First(x => x.Номер_визита == visit.Номер_визита);
             var doctor = db.Врач.First(x => x.Табельный_номер == visit.Табельный_номер);
             var nameDoctor = $"{doctor.Фамилия} {doctor.Имя} {doctor.Отчество}";
-            using (var doc = Configuration.Factory.Open("Больничный_лист.docx"))
-            {
-                doc.Process(new { NamePatient = namePatient, Date = DateTime.Now.ToString("dd/MM/yyyy"), NameDoctor = nameDoctor, Period = $"{sicklLeave.Открыт.ToString("dd/MM/yyyy")}-{sicklLeave.Закрыт.ToString("dd/MM/yyyy")}", Status = sicklLeave.Статус });
-            }
+            using var doc = Configuration.Factory.Open("Больничный_лист.docx");
+            doc.Process(new { NamePatient = namePatient, Date = DateTime.Now.ToString("dd/MM/yyyy"), NameDoctor = nameDoctor, Period = $"{sicklLeave.Открыт:dd/MM/yyyy}-{sicklLeave.Закрыт:dd/MM/yyyy}", Status = sicklLeave.Статус });
         }
 
         public void PrintListVisits()
@@ -543,10 +530,8 @@ namespace СlinicReception.ViewModels
                 string name = $"{doctor.Фамилия} {doctor.Имя[0]}.{doctor.Отчество[0]}.";
                 dt.Rows.Add(visit.Дата_приёма, doctor.Специальность, name, timetable.Номер_кабинета);
             }
-            using (var doc = Configuration.Factory.Open("Список_приёмов.xlsx"))
-            {
-                doc.Process(new { Table1 = dt });
-            }
+            using var doc = Configuration.Factory.Open("Список_приёмов.xlsx");
+            doc.Process(new { Table1 = dt });
         }
 
         //Расписание врачей
@@ -591,10 +576,8 @@ namespace СlinicReception.ViewModels
             dt.Columns.Add("Дни приёмов");
             dt.Columns.Add("Часы приёмов");
             foreach (var timetable in SearchResults) dt.Rows.Add(timetable.Name, timetable.Speciality, timetable.Office, timetable.Days, timetable.Time);
-            using (var doc = Configuration.Factory.Open("Расписание.xlsx"))
-            {
-                doc.Process(new { Table1 = dt });
-            }
+            using var doc = Configuration.Factory.Open("Расписание.xlsx");
+            doc.Process(new { Table1 = dt });
         }
 
         public RegistrarViewModel(MainWindowViewModel mw)

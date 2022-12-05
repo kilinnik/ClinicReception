@@ -1,10 +1,4 @@
-﻿using Avalonia;
-using ReactiveUI;
-using System.Collections.Generic;
-using СlinicReception.Services;
-using Material.Styles.Themes;
-using Material.Styles.Themes.Base;
-using Material.Colors;
+﻿using ReactiveUI;
 
 namespace СlinicReception.ViewModels
 {

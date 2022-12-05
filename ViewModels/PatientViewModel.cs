@@ -1,15 +1,6 @@
-﻿using Avalonia.Controls;
-using FluentAvalonia.Core;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using СlinicReception.Models;
 using СlinicReception.Services;
 
@@ -28,9 +19,9 @@ namespace СlinicReception.ViewModels
 
         //Запись на приём 
         //словарь для сопоставления выбранного дня приёма с расписанием врача
-        Dictionary<string, string> DaysWeek = new Dictionary<string, string>() { { "Пн-Пт", "Monday, Tuesday, Wednesday, Thursday, Friday" }, { "Пн-Чт", "Monday, Tuesday, Wednesday, Thursday" }, { "Вт-Пт", "Tuesday, Wednesday, Thursday, Friday" }, { "Вт-Сб", "Tuesday, Wednesday, Thursday, Friday, Saturday" } };
+        readonly Dictionary<string, string> DaysWeek = new() { { "Пн-Пт", "Monday, Tuesday, Wednesday, Thursday, Friday" }, { "Пн-Чт", "Monday, Tuesday, Wednesday, Thursday" }, { "Вт-Пт", "Tuesday, Wednesday, Thursday, Friday" }, { "Вт-Сб", "Tuesday, Wednesday, Thursday, Friday, Saturday" } };
 
-        ObservableCollection<string> specialities = new ObservableCollection<string>(); //список специальностей
+        ObservableCollection<string> specialities = new(); //список специальностей
         public ObservableCollection<string> Specialities
         {
             get => specialities;
@@ -234,14 +225,14 @@ namespace СlinicReception.ViewModels
 
         }
 
-        public bool CheckTime(Timetable timetable, int hours)
+        public static bool CheckTime(Timetable timetable, int hours)
         {
             bool result = false;
             var time = timetable.Часы_приёма.Split(",");
             foreach (var t in time)
             {
                 var temp = t.Split("-");
-                if (Convert.ToUInt32(temp[0].Substring(0, 2)) <= hours && Convert.ToUInt32(temp[1].Substring(0, 2)) > hours) result = true;
+                if (Convert.ToUInt32(temp[0][..2]) <= hours && Convert.ToUInt32(temp[1][..2]) > hours) result = true;
             }
             return result;
         }
