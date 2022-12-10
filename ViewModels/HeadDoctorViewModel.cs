@@ -40,7 +40,7 @@ namespace СlinicReception.ViewModels
             using var db = new СlinicReceptionContext();
             foreach (var result in SearchResults)
             {
-                db.Remove(db.Расписание.FirstOrDefault(x => x.Табельный_номер == result.Табельный_номер));
+                if (db.Расписание.Any(x => x.Табельный_номер == result.Табельный_номер)) db.Remove(db.Расписание.FirstOrDefault(x => x.Табельный_номер == result.Табельный_номер));
                 db.SaveChanges();
                 db.Remove(db.Врач.First(x => x.Табельный_номер == result.Табельный_номер));
                 if (db.Приём.Any(x => x.Табельный_номер == result.Табельный_номер)) db.Remove(db.Приём.Where(x => x.Табельный_номер == result.Табельный_номер));

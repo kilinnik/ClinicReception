@@ -58,7 +58,7 @@
 									<TextBlock Width="20" FontSize="18" IsEnabled="{Binding !EnabledHours}" IsVisible="{Binding !VisibleHours}" TextAlignment="Right" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Hours2.Value}"></TextBlock>
 								</Panel>
 								<TextBlock FontSize="18" TextAlignment="Center" VerticalAlignment="Center" Classes="Headline6" Text=":"></TextBlock>
-								<TextBlock Width="57" FontSize="18" TextAlignment="Left" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Minutes.Value}"></TextBlock>
+								<TextBlock Width="57" FontSize="18" TextAlignment="Left" VerticalAlignment="Center" Classes="Headline6" Text="{Binding #Minutes.Value, StringFormat=\{0:00\}}"></TextBlock>
 								<ToggleSwitch ToolTip.Tip="Переключить часы" Command="{Binding Switch}" IsChecked="True" Classes="Accent" />
 							</WrapPanel>
 							<controls:Card HorizontalAlignment="Left" Width="260">

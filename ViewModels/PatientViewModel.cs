@@ -405,11 +405,14 @@ namespace СlinicReception.ViewModels
             foreach (var doctor in doctors)
             {
                 string name = $"{doctor.Фамилия} {doctor.Имя[0]}.{doctor.Отчество[0]}.";
-                var timetable = db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер);
-                if (s != null && (timetable.Номер_кабинета.ToString().Contains(s) || name.ToLower().Contains(s.ToLower())))
+                if (db.Расписание.Any(x => x.Табельный_номер == doctor.Табельный_номер))
                 {
-                    SearchResults.Add(new TimetableDoctors() { Name = name, Speciality = doctor.Специальность, Office = (int)timetable.Номер_кабинета, Days = timetable.Дни_приёма, Time = timetable.Часы_приёма });
-                    ShowTimetable = true;
+                    var timetable = db.Расписание.First(x => x.Табельный_номер == doctor.Табельный_номер);
+                    if (s != null && (timetable.Номер_кабинета.ToString().Contains(s) || name.ToLower().Contains(s.ToLower())))
+                    {
+                        SearchResults.Add(new TimetableDoctors() { Name = name, Speciality = doctor.Специальность, Office = (int)timetable.Номер_кабинета, Days = timetable.Дни_приёма, Time = timetable.Часы_приёма });
+                        ShowTimetable = true;
+                    }
                 }
                 if (s == "") ShowTimetable = false;
             }
